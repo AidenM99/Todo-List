@@ -16,6 +16,7 @@
     </header>
     <main>
       <div id="content">
+        <!-----Todo Sidebar----->
         <div class="sidebar">
           <div class="due-dates">
             <p class="sidebar-item"><i class="fas fa-inbox icon"></i>Inbox</p>
@@ -33,11 +34,58 @@
             </p>
           </div>
         </div>
+
+        <!-----Todo Main----->
         <div class="todo-main">
-          <i class="fas fa-plus-circle add-item fa-2x"></i>
+          <div class="todoSectionHeader">
+            <h2 class="sub-heading">Inbox</h2>
+            <button class="newTodo">
+              <i class="fas fa-plus-square add-icon"></i>New Todo
+            </button>
+          </div>
+        </div>
+
+        <!-----Modal----->
+        <div class="modal-bg">
+          <div class="modal-content">
+            <h1 class="modal-heading">New Todo</h1>
+            <span><i class="fas fa-times close-button"></i></span>
+            <form class="modal-form">
+              <label for="task">Task:</label>
+              <input
+                type="text"
+                id="task"
+                class="modal-text-input"
+                placeholder="Task"
+                required
+              />
+              <label for="description">Description:</label>
+              <input
+                type="text"
+                id="description"
+                class="modal-text-input"
+                placeholder="Description"
+                required
+              />
+              <label for="due-date">Date Due:</label>
+              <input
+                type="date"
+                id="due-date"
+                class="modal-text-input"
+                required
+              />
+              <label for="priority">Priority</label>
+              <select id="priority" name="priority">
+                <option value="volvo">Low</option>
+                <option value="saab">Medium</option>
+                <option value="fiat">High</option>
+              </select>
+            </form>
+          </div>
         </div>
       </div>
     </main>
+
     <script src="main.js"></script>
   </body>
 </html>
