@@ -59,12 +59,117 @@ header {
 /*****Todo Main Section*****/
 .todo-main {
   width: 100%;
+  padding: 3% 10%;
   position: relative;
 }
 
-.add-item {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
+.sub-heading {
+  margin: 0;
+}
+
+.add-task {
+  border-radius: 2px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.add-task:hover {
+  background-color: var(--color-darker-grey);
+}
+
+.add-icon {
+  margin: 0 5px;
+}
+
+.todoSectionHeader {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: solid 2px var(--color-orange);
+}
+
+.newTodo {
+  display: inline-block;
+  padding: 0.35em 1.2em;
+  margin: 0 0 5px 0;
+  border: 0.1em solid #ffffff;
+  border-radius: 0.12em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+  transition: all 0.2s;
+  cursor: pointer;
+  background-color: var(--color-orange);
+}
+
+.newTodo:hover {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+/***** Modal *****/
+.modal-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  display: none;
+  z-index: 1;
+}
+
+.modal-content {
+  position: relative;
+  background-color: #ffffff;
   color: var(--color-orange);
+  min-width: 384px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 10px;
+  border: solid var(--color-orange) 2px;
+  padding: 50px 10px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.modal-heading {
+  margin: 0 0 15px 0;
+}
+
+.modal-form > input[type="text"],
+input[type="date"],
+#priority {
+  height: 25px;
+  width: 250px;
+  padding: 6px;
+  border-radius: 5px;
+  border: none;
+  border: solid 1px #b8b8b8;
+  display: block;
+  margin: 0 0 10px 0;
+  font-family: "Poppins", sans-serif;
+}
+
+#priority {
+  height: 37px;
+  width: 262px;
+}
+
+.close-button {
+  position: absolute;
+  right: 9px;
+  top: 7px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  transform: scale(1.5);
+  transition: 300ms;
 }
