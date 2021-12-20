@@ -69,9 +69,11 @@ function createTask() {
 
   const addTask = new Task(task, description, date, priority);
 
+  const formatDate = addTask.formatDate();
+
   tasks.push(addTask);
 
-  displayTask(task, description, date, priority);
+  displayTask(task, description, formatDate, priority);
 }
 
 function displayTask(task, description, date, priority) {
