@@ -27,7 +27,7 @@ function initModal() {
   closeButton.addEventListener("click", closeModal);
 
   const addTask = document.querySelector(".add-task");
-  addTask.addEventListener("click", newTask);
+  addTask.addEventListener("click", createTask);
 
   document.addEventListener("click", (event) => {
     if (
@@ -52,7 +52,7 @@ function closeModal() {
   modal.style.display = "none";
 }
 
-function newTask() {
+function createTask() {
   const taskInput = document.getElementById("task");
   const task = taskInput.value;
 
@@ -65,10 +65,31 @@ function newTask() {
   const priorityInput = document.getElementById("priority");
   const priority = priorityInput.value;
 
-  if (!task || !description || !date) return;
+  if (!task || !description || !date) return alert("All fields must be filled");
 
   const addTask = new Task(task, description, date, priority);
 
   tasks.push(addTask);
-  console.log(tasks);
+
+  displayTask(task, description, date, priority);
+}
+
+function displayTask(task, description, date, priority) {
+  const todoSection = document.querySelector(".todo-main");
+
+  const todoList = document.querySelector(".todo-list");
+
+  const listElement = document.createElement("li");
+  listElement.classList.add("todo-item");
+
+  const leftPanel = document.createElement("div");
+  leftPanel.innerHTML = `<i class="far fa-circle"></i> ${task}`;
+
+  const rightPanel = document.createElement("div");
+  rightPanel.innerHTML = date + priority;
+
+  listElement.appendChild(leftPanel);
+  listElement.appendChild(rightPanel);
+  todoList.appendChild(listElement);
+  todoSection.appendChild(todoList);
 }

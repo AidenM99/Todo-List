@@ -87,7 +87,8 @@ header {
   border-bottom: solid 2px var(--color-orange);
 }
 
-.new-todo, .add-task {
+.new-todo,
+.add-task {
   display: inline-block;
   padding: 0.35em 1.2em;
   margin: 0 0 5px 0;
@@ -107,6 +108,15 @@ header {
 .newTodo:hover {
   color: #000000;
   background-color: #ffffff;
+}
+
+.todo-list {
+  padding: 10px 10px;
+}
+
+.todo-item {
+  display: flex;
+  justify-content: space-between;
 }
 
 /***** Modal *****/
