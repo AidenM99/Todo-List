@@ -87,7 +87,7 @@ header {
   border-bottom: solid 2px var(--color-orange);
 }
 
-.newTodo {
+.new-todo, .add-task {
   display: inline-block;
   padding: 0.35em 1.2em;
   margin: 0 0 5px 0;
@@ -167,9 +167,15 @@ input[type="date"],
   right: 9px;
   top: 7px;
   cursor: pointer;
+  color: #000000;
 }
 
 .close-button:hover {
   transform: scale(1.5);
   transition: 300ms;
+}
+
+.add-task-button-container {
+  text-align: center;
+  margin-top: 20px;
 }
