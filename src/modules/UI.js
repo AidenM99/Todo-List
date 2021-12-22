@@ -1,4 +1,5 @@
 import Task from "./CreateTask";
+import { format, getWeek, isThisWeek, weekStartsOn } from "date-fns";
 
 export default function initialiseUI() {
   initSidebar();
@@ -11,12 +12,16 @@ function initSidebar() {
   const sidebarItems = document.querySelectorAll(".sidebar-item");
 
   sidebarItems.forEach((item) => {
-    item.addEventListener("click", () => {
-      const subHeading = document.querySelector(".sub-heading");
-
-      subHeading.textContent = item.textContent;
+    item.addEventListener("click", (e) => {
+      changeSubHeading(e.target.id);
+      filterTodo(e.target.id);
     });
   });
+}
+
+function changeSubHeading(sidebarItem) {
+  const subHeading = document.querySelector(".sub-heading");
+  subHeading.textContent = sidebarItem;
 }
 
 function initModal() {
@@ -67,16 +72,18 @@ function createTask() {
 
   if (!task || !description || !date) return alert("All fields must be filled");
 
-  const addTask = new Task(task, description, date, priority);
+  const newTask = new Task(task, description, date, priority);
 
-  const formatDate = addTask.formatDate();
+  const formattedDate = newTask.formatDate();
 
-  tasks.push(addTask);
+  newTask.dueDate = formattedDate;
 
-  displayTask(task, description, formatDate, priority);
+  tasks.push(newTask);
+
+  displayTask(task, formattedDate, priority);
 }
 
-function displayTask(task, description, date, priority) {
+function displayTask(task, date, priority) {
   const todoSection = document.querySelector(".todo-main");
 
   const todoList = document.querySelector(".todo-list");
@@ -94,4 +101,31 @@ function displayTask(task, description, date, priority) {
   listElement.appendChild(rightPanel);
   todoList.appendChild(listElement);
   todoSection.appendChild(todoList);
+}
+
+function filterTodo(id) {
+  const filter = id;
+  const today = format(new Date(), "dd/MM/yyyy");
+
+  for (let i = 0; i < tasks.length; i++) {
+    const todoElement = document.querySelectorAll(".todo-item");
+    const getTaskDate = new Date(
+      tasks[i].retrieveYear(),
+      tasks[i].retrieveMonth() - 1,
+      tasks[i].retrieveDate()
+    );
+
+    if (filter === "Inbox") {
+      todoElement[i].style.display = "flex";
+    } else if (filter === "Today" && tasks[i].dueDate === today) {
+      todoElement[i].style.display = "flex";
+    } else if (
+      filter === "Week" &&
+      isThisWeek(getTaskDate, { weekStartsOn: 1 })
+    ) {
+      todoElement[i].style.display = "flex";
+    } else {
+      todoElement[i].style.display = "none";
+    }
+  }
 }

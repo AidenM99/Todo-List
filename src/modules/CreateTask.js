@@ -10,4 +10,19 @@ export default class Task {
     const modifyDate = this.dueDate.replaceAll("-", "/");
     return modifyDate.split("/").reverse().join("/");
   }
+
+  retrieveDate() {
+    const date = this.dueDate.slice(0, 2);
+    return date;
+  }
+
+  retrieveMonth() {
+    const month = this.dueDate.slice(3, 5);
+    return month;
+  }
+
+  retrieveYear() {
+    const year = this.dueDate.slice(6, 10);
+    return year;
+  }
 }
