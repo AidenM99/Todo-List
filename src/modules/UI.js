@@ -26,10 +26,16 @@ function changeSubHeading(sidebarItem) {
 
 function initModal() {
   const newTodo = document.querySelector(".new-todo");
-  newTodo.addEventListener("click", openModal);
+  newTodo.addEventListener("click", (e) => {
+    openModal(e.target);
+  });
 
-  const closeButton = document.querySelector(".close-button");
-  closeButton.addEventListener("click", closeModal);
+  const closeButton = document.querySelectorAll(".close-button");
+  closeButton.forEach((button) => {
+    button.addEventListener("click", () => {
+      closeModal();
+    });
+  });
 
   const addTask = document.querySelector(".add-task");
   addTask.addEventListener("click", createTask);
@@ -38,23 +44,29 @@ function initModal() {
     if (
       !event.target.closest(".modal-content") &&
       !event.target.classList.contains("new-todo") &&
-      !event.target.classList.contains("add-task")
+      !event.target.classList.contains("add-task") &&
+      event.target.id != "info"
     ) {
       closeModal();
     }
   });
 }
 
-function openModal() {
-  const modal = document.querySelector(".modal-bg");
+function openModal(button) {
+  const Todomodal = document.getElementById("todo-modal");
+  const Infomodal = document.getElementById("info-modal");
 
-  modal.style.display = "flex";
+  if (button.classList.contains("new-todo"))
+    return (Todomodal.style.display = "flex");
+  Infomodal.style.display = "flex";
 }
 
 function closeModal() {
-  const modal = document.querySelector(".modal-bg");
+  const Todomodal = document.getElementById("todo-modal");
+  const Infomodal = document.getElementById("info-modal");
 
-  modal.style.display = "none";
+  Todomodal.style.display = "none";
+  Infomodal.style.display = "none";
 }
 
 function createTask() {
@@ -90,16 +102,26 @@ function displayTask(task, date, priority) {
 
   const listElement = document.createElement("li");
   listElement.classList.add("todo-item");
+  listElement.addEventListener("click", (e) => {
+    const id = e.target.id;
+    if (id === "edit") {
+    } else if (id === "info") {
+      const taskName = listElement.childNodes[0].textContent;
+      getClickedTask(taskName);
+      openModal(e.target);
+    } else if (id === "delete") {
+    }
+  });
 
   const leftPanel = document.createElement("div");
   leftPanel.classList.add("left-panel");
-  leftPanel.innerHTML = `<i class="far fa-circle"></i> ${task}`;
+  leftPanel.innerHTML = `<i class="far fa-circle"></i>${task}`;
 
   const rightPanel = document.createElement("div");
   rightPanel.classList.add("right-panel");
   rightPanel.innerHTML = `<p class="date-text">${date}</p>
   <p class="priority-text">${priority}</p>
-  </i><i class="fas fa-edit todo-icon"></i><i class="fas fa-info todo-icon"></i><i class="fas fa-trash todo-icon">`;
+  </i><i class="fas fa-edit todo-icon" id="edit"></i><i class="fas fa-info todo-icon" id="info"></i><i class="fas fa-trash todo-icon" id="delete">`;
 
   listElement.appendChild(leftPanel);
   listElement.appendChild(rightPanel);
@@ -132,4 +154,14 @@ function filterTodo(id) {
       todoElement[i].style.display = "none";
     }
   }
+}
+
+function getClickedTask(taskName) {
+  const clickedTask = tasks.findIndex((task) => task.task === taskName);
+  getTaskDescription(clickedTask);
+}
+
+function getTaskDescription(clickedTask) {
+  const info = document.querySelector(".info");
+  info.textContent = tasks[clickedTask].description;
 }

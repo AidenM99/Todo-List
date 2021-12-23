@@ -5,6 +5,10 @@ export default class Task {
     this.dueDate = dueDate;
     this.priority = priority;
   }
+  
+  getDescription() {
+    return this.description;
+  }
 
   formatDate() {
     const modifyDate = this.dueDate.replaceAll("-", "/");

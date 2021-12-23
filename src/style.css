@@ -4,6 +4,7 @@
   --color-orange: #ff4500;
   --color-grey: #e8e8e8;
   --color-darker-grey: #dcdcdc;
+  --twitter-blue: #1da1f2;
 }
 
 body {
@@ -130,12 +131,25 @@ header {
   align-items: center;
 }
 
-.date-text, .priority-text {
+.date-text,
+.priority-text {
   margin: 0 5px;
 }
 
 .todo-icon {
   margin: 0 7.5px;
+}
+
+#edit:hover {
+  color: green;
+}
+
+#info:hover {
+  color: var(--twitter-blue);
+}
+
+#delete:hover {
+  color: red;
 }
 
 /***** Modal *****/
@@ -170,6 +184,10 @@ header {
 
 .modal-heading {
   margin: 0 0 15px 0;
+}
+
+.modal-heading.description {
+  border-bottom: 2px solid #000000;
 }
 
 .modal-form > input[type="text"],
