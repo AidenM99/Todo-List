@@ -92,10 +92,14 @@ function displayTask(task, date, priority) {
   listElement.classList.add("todo-item");
 
   const leftPanel = document.createElement("div");
+  leftPanel.classList.add("left-panel");
   leftPanel.innerHTML = `<i class="far fa-circle"></i> ${task}`;
 
   const rightPanel = document.createElement("div");
-  rightPanel.innerHTML = date + priority;
+  rightPanel.classList.add("right-panel");
+  rightPanel.innerHTML = `<p class="date-text">${date}</p>
+  <p class="priority-text">${priority}</p>
+  </i><i class="fas fa-edit todo-icon"></i><i class="fas fa-info todo-icon"></i><i class="fas fa-trash todo-icon">`;
 
   listElement.appendChild(leftPanel);
   listElement.appendChild(rightPanel);
