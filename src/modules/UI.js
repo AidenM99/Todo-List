@@ -116,9 +116,11 @@ function displayTask(task, date, priority) {
     if (id === "edit") {
     } else if (id === "info") {
       const taskName = listElement.childNodes[0].textContent;
-      getClickedTask(taskName);
+      getClickedTask(taskName, id);
       openModal(e.target);
     } else if (id === "delete") {
+      const targetNode = e.target.parentNode.parentNode;
+      deleteTask(targetNode);
     }
   });
 
@@ -173,4 +175,8 @@ function getClickedTask(taskName) {
 function getTaskDescription(clickedTask) {
   const info = document.querySelector(".info");
   info.textContent = tasks[clickedTask].description;
+}
+
+function deleteTask(targetNode) {
+  targetNode.remove();
 }
