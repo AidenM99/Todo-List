@@ -1,5 +1,5 @@
 import Task from "./CreateTask";
-import { format, getWeek, isThisWeek, weekStartsOn } from "date-fns";
+import { format, isThisWeek } from "date-fns";
 
 export default function initialiseUI() {
   initSidebar();
@@ -69,6 +69,13 @@ function closeModal() {
   Infomodal.style.display = "none";
 }
 
+function resetModal(task, description, date, priority) {
+  task.value = "";
+  description.value = "";
+  date.value = "";
+  priority.value = "Low";
+}
+
 function createTask() {
   const taskInput = document.getElementById("task");
   const task = taskInput.value;
@@ -85,6 +92,8 @@ function createTask() {
   if (!task || !description || !date) return alert("All fields must be filled");
 
   const newTask = new Task(task, description, date, priority);
+
+  resetModal(taskInput, descriptionInput, dateInput, priorityInput);
 
   const formattedDate = newTask.formatDate();
 
