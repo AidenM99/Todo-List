@@ -112,16 +112,8 @@ function displayTask(task, date, priority) {
   const listElement = document.createElement("li");
   listElement.classList.add("todo-item");
   listElement.addEventListener("click", (e) => {
-    const id = e.target.id;
-    if (id === "edit") {
-    } else if (id === "info") {
-      const taskName = listElement.childNodes[0].textContent;
-      getClickedTask(taskName, id);
-      openModal(e.target);
-    } else if (id === "delete") {
-      const targetNode = e.target.parentNode.parentNode;
-      deleteTask(targetNode);
-    }
+    const taskName = listElement.childNodes[0].textContent;
+    handleListIcons(taskName, e);
   });
 
   const leftPanel = document.createElement("div");
@@ -167,16 +159,31 @@ function filterTodo(id) {
   }
 }
 
-function getClickedTask(taskName) {
-  const clickedTask = tasks.findIndex((task) => task.task === taskName);
-  getTaskDescription(clickedTask);
+function handleListIcons(taskName, e) {
+  const id = e.target.id;
+  if (id === "edit") {
+  } else if (id === "info") {
+    const targetElement = e.target;
+    getTaskDescription(taskName);
+    openModal(targetElement);
+  } else if (id === "delete") {
+    const targetNode = e.target.parentNode.parentNode;
+    deleteTask(targetNode, taskName);
+  }
 }
 
-function getTaskDescription(clickedTask) {
+function getClickedTask(taskName) {
+  return tasks.findIndex((task) => task.task === taskName);
+}
+
+function getTaskDescription(taskName) {
   const info = document.querySelector(".info");
+  const clickedTask = getClickedTask(taskName);
   info.textContent = tasks[clickedTask].description;
 }
 
-function deleteTask(targetNode) {
+function deleteTask(targetNode, taskName) {
   targetNode.remove();
+  const clickedTask = getClickedTask(taskName);
+  tasks.splice(clickedTask, 1);
 }
