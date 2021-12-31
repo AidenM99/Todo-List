@@ -67,6 +67,7 @@ document.addEventListener("click", (event) => {
     event.target.id != "info"
   ) {
     modalController();
+    resetModal();
   }
 });
 
@@ -90,17 +91,22 @@ function modalController(id) {
   }
 }
 
-function resetModal(task, desc, date, priority) {
-  task.value = "";
-  desc.value = "";
-  date.value = "";
-  priority.value = "Low";
+function resetModal() {
+  const modalFields = document.querySelectorAll(".modal-field");
+
+  for (let i = 0; i < modalFields.length; i++) {
+    if (i === 3) {
+      modalFields[i].value = "Low";
+      continue;
+    }
+    modalFields[i].value = "";
+  }
 }
 
 const modalButton = document.querySelector(".modal-button");
-modalButton.addEventListener("click", checkModalFields);
+modalButton.addEventListener("click", createTask);
 
-function checkModalFields() {
+function createTask() {
   const taskField = document.getElementById("task");
   const taskVal = taskField.value;
 
@@ -116,20 +122,16 @@ function checkModalFields() {
   if (!taskVal || !descVal || !dateVal)
     return alert("All fields must be filled");
 
-  createTask(taskVal, descVal, dateVal, priorityVal);
-  resetModal(taskField, descField, dateField, priorityField);
-}
+  const newTask = new Task(taskVal, descVal, dateVal, priorityVal);
 
-function createTask(task, desc, date, priority) {
-  const newTask = new Task(task, desc, date, priority);
+  const formatDate = newTask.formatDate();
 
-  const formattedDate = newTask.formatDate();
-
-  newTask.dueDate = formattedDate;
+  newTask.dueDate = formatDate;
 
   tasks.push(newTask);
 
-  displayTask(task, formattedDate, priority);
+  displayTask(taskVal, formatDate, priorityVal);
+  resetModal();
 }
 
 function displayTask(task, date, priority) {
@@ -190,15 +192,15 @@ function deleteTask(targetNode, clickedTask) {
 }
 
 function retrieveTaskData(clickedTask) {
-  const taskInput = document.getElementById("task");
-  const descriptionInput = document.getElementById("description");
-  const dateInput = document.getElementById("due-date");
-  const priorityInput = document.getElementById("priority");
+  const modalFields = document.querySelectorAll(".modal-field");
 
-  taskInput.value = tasks[clickedTask].task;
-  descriptionInput.value = tasks[clickedTask].description;
-  dateInput.value = tasks[clickedTask].clearFormattedDate();
-  priorityInput.value = tasks[clickedTask].priority;
+  for (let i = 0; i < modalFields.length; i++) {
+    const modalFieldId = modalFields[i].id;
 
-  console.log(tasks[0])
+    if (i === 2) {
+      modalFields[i].value = tasks[clickedTask].clearFormattedDate();
+      continue;
+    }
+    modalFields[i].value = tasks[clickedTask][modalFieldId];
+  }
 }
