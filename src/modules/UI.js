@@ -19,117 +19,9 @@ function initSidebar() {
   });
 }
 
-function changeSubHeading(sidebarItem) {
+function changeSubHeading(id) {
   const subHeading = document.querySelector(".sub-heading");
-  subHeading.textContent = sidebarItem;
-}
-
-function initModal() {
-  const newTodo = document.querySelector(".new-todo");
-  newTodo.addEventListener("click", (e) => {
-    openModal(e.target);
-  });
-
-  const closeButton = document.querySelectorAll(".close-button");
-  closeButton.forEach((button) => {
-    button.addEventListener("click", () => {
-      closeModal();
-    });
-  });
-
-  const addTask = document.querySelector(".add-task");
-  addTask.addEventListener("click", createTask);
-
-  document.addEventListener("click", (event) => {
-    if (
-      !event.target.closest(".modal-content") &&
-      !event.target.classList.contains("new-todo") &&
-      !event.target.classList.contains("add-task") &&
-      event.target.id != "info"
-    ) {
-      closeModal();
-    }
-  });
-}
-
-function openModal(button) {
-  const Todomodal = document.getElementById("todo-modal");
-  const Infomodal = document.getElementById("info-modal");
-
-  if (button.classList.contains("new-todo"))
-    return (Todomodal.style.display = "flex");
-  Infomodal.style.display = "flex";
-}
-
-function closeModal() {
-  const Todomodal = document.getElementById("todo-modal");
-  const Infomodal = document.getElementById("info-modal");
-
-  Todomodal.style.display = "none";
-  Infomodal.style.display = "none";
-}
-
-function resetModal(task, description, date, priority) {
-  task.value = "";
-  description.value = "";
-  date.value = "";
-  priority.value = "Low";
-}
-
-function createTask() {
-  const taskInput = document.getElementById("task");
-  const task = taskInput.value;
-
-  const descriptionInput = document.getElementById("description");
-  const description = descriptionInput.value;
-
-  const dateInput = document.getElementById("due-date");
-  const date = dateInput.value;
-
-  const priorityInput = document.getElementById("priority");
-  const priority = priorityInput.value;
-
-  if (!task || !description || !date) return alert("All fields must be filled");
-
-  const newTask = new Task(task, description, date, priority);
-
-  resetModal(taskInput, descriptionInput, dateInput, priorityInput);
-
-  const formattedDate = newTask.formatDate();
-
-  newTask.dueDate = formattedDate;
-
-  tasks.push(newTask);
-
-  displayTask(task, formattedDate, priority);
-}
-
-function displayTask(task, date, priority) {
-  const todoSection = document.querySelector(".todo-main");
-
-  const todoList = document.querySelector(".todo-list");
-
-  const listElement = document.createElement("li");
-  listElement.classList.add("todo-item");
-  listElement.addEventListener("click", (e) => {
-    const taskName = listElement.childNodes[0].textContent;
-    handleListIcons(taskName, e);
-  });
-
-  const leftPanel = document.createElement("div");
-  leftPanel.classList.add("left-panel");
-  leftPanel.innerHTML = `<i class="far fa-circle"></i>${task}`;
-
-  const rightPanel = document.createElement("div");
-  rightPanel.classList.add("right-panel");
-  rightPanel.innerHTML = `<p class="date-text">${date}</p>
-  <p class="priority-text">${priority}</p>
-  </i><i class="fas fa-edit todo-icon" id="edit"></i><i class="fas fa-info todo-icon" id="info"></i><i class="fas fa-trash todo-icon" id="delete">`;
-
-  listElement.appendChild(leftPanel);
-  listElement.appendChild(rightPanel);
-  todoList.appendChild(listElement);
-  todoSection.appendChild(todoList);
+  subHeading.textContent = id;
 }
 
 function filterTodo(id) {
@@ -159,16 +51,127 @@ function filterTodo(id) {
   }
 }
 
-function handleListIcons(taskName, e) {
-  const id = e.target.id;
-  if (id === "edit") {
+function initModal() {
+  const newTodo = document.getElementById("new-todo");
+  newTodo.addEventListener("click", (e) => {
+    modalController(e.target.id);
+  });
+}
+
+document.addEventListener("click", (event) => {
+  if (
+    !event.target.closest(".modal-content") &&
+    !event.target.classList.contains(".modal-button") &&
+    event.target.id != "new-todo" &&
+    event.target.id != "edit" &&
+    event.target.id != "info"
+  ) {
+    modalController();
+  }
+});
+
+function modalController(id) {
+  const modalHeading = document.querySelector(".modal-heading");
+  const modalButton = document.querySelector(".modal-button");
+
+  if (id === "new-todo") {
+    document.getElementById("todo-modal").style.display = "flex";
+    modalHeading.textContent = "New Todo";
+    modalButton.textContent = "Add Task";
+  } else if (id === "edit") {
+    document.getElementById("todo-modal").style.display = "flex";
+    modalHeading.textContent = "Edit Todo";
+    modalButton.textContent = "Update Task";
   } else if (id === "info") {
-    const targetElement = e.target;
-    getTaskDescription(taskName);
-    openModal(targetElement);
-  } else if (id === "delete") {
+    document.getElementById("info-modal").style.display = "flex";
+  } else {
+    document.getElementById("info-modal").style.display = "none";
+    document.getElementById("todo-modal").style.display = "none";
+  }
+}
+
+function resetModal(task, desc, date, priority) {
+  task.value = "";
+  desc.value = "";
+  date.value = "";
+  priority.value = "Low";
+}
+
+const modalButton = document.querySelector(".modal-button");
+modalButton.addEventListener("click", checkModalFields);
+
+function checkModalFields() {
+  const taskField = document.getElementById("task");
+  const taskVal = taskField.value;
+
+  const descField = document.getElementById("description");
+  const descVal = descField.value;
+
+  const dateField = document.getElementById("due-date");
+  const dateVal = dateField.value;
+
+  const priorityField = document.getElementById("priority");
+  const priorityVal = priorityField.value;
+
+  if (!taskVal || !descVal || !dateVal)
+    return alert("All fields must be filled");
+
+  createTask(taskVal, descVal, dateVal, priorityVal);
+  resetModal(taskField, descField, dateField, priorityField);
+}
+
+function createTask(task, desc, date, priority) {
+  const newTask = new Task(task, desc, date, priority);
+
+  const formattedDate = newTask.formatDate();
+
+  newTask.dueDate = formattedDate;
+
+  tasks.push(newTask);
+
+  displayTask(task, formattedDate, priority);
+}
+
+function displayTask(task, date, priority) {
+  const todoSection = document.querySelector(".todo-main");
+
+  const todoList = document.querySelector(".todo-list");
+
+  const listElement = document.createElement("li");
+  listElement.classList.add("todo-item");
+  listElement.addEventListener("click", (e) => {
+    const id = e.target.id;
     const targetNode = e.target.parentNode.parentNode;
-    deleteTask(targetNode, taskName);
+    const taskName = listElement.childNodes[0].textContent;
+
+    handleTaskIcons(id, targetNode, taskName);
+  });
+
+  const leftPanel = document.createElement("div");
+  leftPanel.classList.add("left-panel");
+  leftPanel.innerHTML = `<i class="far fa-circle"></i><p class="task-name">${task}</p>`;
+
+  const rightPanel = document.createElement("div");
+  rightPanel.classList.add("right-panel");
+  rightPanel.innerHTML = `<p class="date-text">${date}</p>
+  <p class="priority-text">${priority}</p>
+  </i><i class="fas fa-edit todo-icon" id="edit"></i><i class="fas fa-info todo-icon" id="info"></i><i class="fas fa-trash todo-icon" id="delete">`;
+
+  listElement.appendChild(leftPanel);
+  listElement.appendChild(rightPanel);
+  todoList.appendChild(listElement);
+  todoSection.appendChild(todoList);
+}
+
+function handleTaskIcons(id, targetNode, taskName) {
+  if (id === "edit") {
+    modalController(id);
+    retrieveTaskData(getClickedTask(taskName));
+  } else if (id === "info") {
+    getTaskDescription(getClickedTask(taskName));
+    modalController(id);
+  } else if (id === "delete") {
+    deleteTask(targetNode, getClickedTask(taskName));
   }
 }
 
@@ -176,14 +179,26 @@ function getClickedTask(taskName) {
   return tasks.findIndex((task) => task.task === taskName);
 }
 
-function getTaskDescription(taskName) {
+function getTaskDescription(clickedTask) {
   const info = document.querySelector(".info");
-  const clickedTask = getClickedTask(taskName);
   info.textContent = tasks[clickedTask].description;
 }
 
-function deleteTask(targetNode, taskName) {
+function deleteTask(targetNode, clickedTask) {
   targetNode.remove();
-  const clickedTask = getClickedTask(taskName);
   tasks.splice(clickedTask, 1);
+}
+
+function retrieveTaskData(clickedTask) {
+  const taskInput = document.getElementById("task");
+  const descriptionInput = document.getElementById("description");
+  const dateInput = document.getElementById("due-date");
+  const priorityInput = document.getElementById("priority");
+
+  taskInput.value = tasks[clickedTask].task;
+  descriptionInput.value = tasks[clickedTask].description;
+  dateInput.value = tasks[clickedTask].clearFormattedDate();
+  priorityInput.value = tasks[clickedTask].priority;
+
+  console.log(tasks[0])
 }

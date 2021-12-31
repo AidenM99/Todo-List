@@ -68,13 +68,13 @@ header {
   margin: 0;
 }
 
-.add-task {
+.modal-button {
   border-radius: 2px;
   padding: 5px 10px;
   cursor: pointer;
 }
 
-.add-task:hover {
+.modal-button:hover {
   background-color: var(--color-darker-grey);
 }
 
@@ -88,8 +88,8 @@ header {
   border-bottom: solid 2px var(--color-orange);
 }
 
-.new-todo,
-.add-task {
+#new-todo,
+.modal-button {
   display: inline-block;
   padding: 0.35em 1.2em;
   margin: 0 0 5px 0;
@@ -126,9 +126,14 @@ header {
   background-color: var(--color-grey);
 }
 
-.right-panel {
+.right-panel,
+.left-panel {
   display: flex;
   align-items: center;
+}
+
+.task-name {
+  margin: 0 0 0 10px;
 }
 
 .date-text,
@@ -207,20 +212,7 @@ input[type="date"],
   width: 262px;
 }
 
-.close-button {
-  position: absolute;
-  right: 9px;
-  top: 7px;
-  cursor: pointer;
-  color: #000000;
-}
-
-.close-button:hover {
-  transform: scale(1.5);
-  transition: 300ms;
-}
-
-.add-task-button-container {
+.modal-button-container {
   text-align: center;
   margin-top: 20px;
 }
