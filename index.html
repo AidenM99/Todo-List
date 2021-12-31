@@ -41,7 +41,7 @@
         <div class="todo-main">
           <div class="todoSectionHeader">
             <h2 class="sub-heading">Inbox</h2>
-            <button class="new-todo">
+            <button id="new-todo">
               <i class="fas fa-plus-square add-icon"></i>New Todo
             </button>
           </div>
@@ -51,8 +51,7 @@
         <!-----Todo Modal----->
         <div id="todo-modal" class="modal-bg">
           <div class="modal-content">
-            <h1 class="modal-heading">New Todo</h1>
-            <span><i class="fas fa-times close-button"></i></span>
+            <h1 class="modal-heading"></h1>
             <form class="modal-form">
               <label for="task">Task:</label>
               <input
@@ -83,8 +82,8 @@
                 <option value="Medium">Medium</option>
                 <option value="High">High</option>
               </select>
-              <div class="add-task-button-container">
-                <button type="button" class="add-task">Add Task</button>
+              <div class="modal-button-container">
+                <button type="button" class="modal-button"></button>
               </div>
             </form>
           </div>
@@ -94,7 +93,6 @@
         <div id="info-modal" class="modal-bg">
           <div class="modal-content">
             <h1 class="modal-heading description">Description</h1>
-            <span><i class="fas fa-times close-button"></i></span>
             <p class="info"></p>
           </div>
         </div>
