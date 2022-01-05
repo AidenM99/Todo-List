@@ -8,6 +8,8 @@ export default function initialiseUI() {
 
 const tasks = [];
 
+let currentTask;
+
 function initSidebar() {
   const sidebarItems = document.querySelectorAll(".sidebar-item");
 
@@ -16,6 +18,23 @@ function initSidebar() {
       changeSubHeading(e.target.id);
       filterTodo(e.target.id);
     });
+  });
+}
+
+function initModal() {
+  const newTodo = document.getElementById("new-todo");
+  newTodo.addEventListener("click", (e) => {
+    modalDisplayController(e.target.id);
+  });
+
+  const modalButton = document.querySelector(".modal-button");
+  modalButton.addEventListener("click", (e) => {
+    if (e.target.textContent === "Add Task") {
+      createTask();
+    } else {
+      const newTask = createTask(e.target.textContent);
+      editTask(newTask, getClickedTask(currentTask));
+    }
   });
 }
 
@@ -51,27 +70,20 @@ function filterTodo(id) {
   }
 }
 
-function initModal() {
-  const newTodo = document.getElementById("new-todo");
-  newTodo.addEventListener("click", (e) => {
-    modalController(e.target.id);
-  });
-}
-
-document.addEventListener("click", (event) => {
+document.addEventListener("click", (e) => {
   if (
-    !event.target.closest(".modal-content") &&
-    !event.target.classList.contains(".modal-button") &&
-    event.target.id != "new-todo" &&
-    event.target.id != "edit" &&
-    event.target.id != "info"
+    !e.target.closest(".modal-content") &&
+    !e.target.classList.contains(".modal-button") &&
+    e.target.id != "new-todo" &&
+    e.target.id != "edit" &&
+    e.target.id != "info"
   ) {
-    modalController();
+    modalDisplayController();
     resetModal();
   }
 });
 
-function modalController(id) {
+function modalDisplayController(id) {
   const modalHeading = document.querySelector(".modal-heading");
   const modalButton = document.querySelector(".modal-button");
 
@@ -103,10 +115,7 @@ function resetModal() {
   }
 }
 
-const modalButton = document.querySelector(".modal-button");
-modalButton.addEventListener("click", createTask);
-
-function createTask() {
+function createTask(e) {
   const taskField = document.getElementById("task");
   const taskVal = taskField.value;
 
@@ -129,6 +138,8 @@ function createTask() {
   newTask.dueDate = formatDate;
 
   tasks.push(newTask);
+
+  if (e) return newTask;
 
   displayTask(taskVal, formatDate, priorityVal);
   resetModal();
@@ -167,13 +178,14 @@ function displayTask(task, date, priority) {
 
 function handleTaskIcons(id, targetNode, taskName) {
   if (id === "edit") {
-    modalController(id);
-    retrieveTaskData(getClickedTask(taskName));
+    currentTask = taskName;
+    modalDisplayController(id);
+    getTaskData(getClickedTask(taskName));
   } else if (id === "info") {
     getTaskDescription(getClickedTask(taskName));
-    modalController(id);
+    modalDisplayController(id);
   } else if (id === "delete") {
-    deleteTask(targetNode, getClickedTask(taskName));
+    deleteTask(getClickedTask(taskName), targetNode);
   }
 }
 
@@ -186,12 +198,12 @@ function getTaskDescription(clickedTask) {
   info.textContent = tasks[clickedTask].description;
 }
 
-function deleteTask(targetNode, clickedTask) {
-  targetNode.remove();
+function deleteTask(clickedTask, targetNode) {
+  if (targetNode) targetNode.remove();
   tasks.splice(clickedTask, 1);
 }
 
-function retrieveTaskData(clickedTask) {
+function getTaskData(clickedTask) {
   const modalFields = document.querySelectorAll(".modal-field");
 
   for (let i = 0; i < modalFields.length; i++) {
@@ -203,4 +215,19 @@ function retrieveTaskData(clickedTask) {
     }
     modalFields[i].value = tasks[clickedTask][modalFieldId];
   }
+}
+
+function editTask(newTask, currentTask) {
+  const taskName = document.querySelectorAll(".task-name");
+  const dateText = document.querySelectorAll(".date-text");
+  const priorityText = document.querySelectorAll(".priority-text");
+
+  taskName[currentTask].textContent = newTask.task;
+  dateText[currentTask].textContent = newTask.dueDate;
+  priorityText[currentTask].textContent = newTask.priority;
+
+  tasks[currentTask] = newTask;
+  deleteTask(tasks.length - 1);
+
+  resetModal();
 }
