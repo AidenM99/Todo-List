@@ -1,4 +1,4 @@
-import Task from "./CreateTask";
+import Task from "./Task";
 import { format, isThisWeek } from "date-fns";
 
 export default function initialiseUI() {
@@ -15,8 +15,9 @@ function initSidebar() {
 
   sidebarItems.forEach((item) => {
     item.addEventListener("click", (e) => {
-      changeSubHeading(e.target.id);
-      filterTodo(e.target.id);
+      const id = e.target.id;
+      changeSubHeading(id);
+      filterTodo(id);
     });
   });
 }
@@ -24,7 +25,8 @@ function initSidebar() {
 function initModal() {
   const newTodo = document.getElementById("new-todo");
   newTodo.addEventListener("click", (e) => {
-    modalDisplayController(e.target.id);
+    const id = e.target.id;
+    modalDisplayController(id);
   });
 
   const modalButton = document.querySelector(".modal-button");
@@ -32,15 +34,15 @@ function initModal() {
     if (e.target.textContent === "Add Task") {
       createTask();
     } else {
-      const newTask = createTask(e.target.textContent);
+      const newTask = createTask(e);
       editTask(newTask, getClickedTask(currentTask));
     }
   });
 }
 
-function changeSubHeading(id) {
+function changeSubHeading(sidebarItem) {
   const subHeading = document.querySelector(".sub-heading");
-  subHeading.textContent = id;
+  subHeading.textContent = sidebarItem;
 }
 
 function filterTodo(id) {
@@ -86,20 +88,29 @@ document.addEventListener("click", (e) => {
 function modalDisplayController(id) {
   const modalHeading = document.querySelector(".modal-heading");
   const modalButton = document.querySelector(".modal-button");
+  const todoModal = document.getElementById("todo-modal");
+  const infoModal = document.getElementById("info-modal");
+  const addProject = document.getElementById("add-project ");
 
-  if (id === "new-todo") {
-    document.getElementById("todo-modal").style.display = "flex";
-    modalHeading.textContent = "New Todo";
-    modalButton.textContent = "Add Task";
-  } else if (id === "edit") {
-    document.getElementById("todo-modal").style.display = "flex";
-    modalHeading.textContent = "Edit Todo";
-    modalButton.textContent = "Update Task";
-  } else if (id === "info") {
-    document.getElementById("info-modal").style.display = "flex";
-  } else {
-    document.getElementById("info-modal").style.display = "none";
-    document.getElementById("todo-modal").style.display = "none";
+  switch (id) {
+    case "new-todo":
+      todoModal.style.display = "flex";
+      modalHeading.textContent = "New Todo";
+      modalButton.textContent = "Add Task";
+      break;
+    case "edit":
+      todoModal.style.display = "flex";
+      modalHeading.textContent = "Edit Todo";
+      modalButton.textContent = "Update Task";
+      break;
+    case "add-project":
+      break;
+    case "info":
+      infoModal.style.display = "flex";
+      break;
+    default:
+      infoModal.style.display = "none";
+      todoModal.style.display = "none";
   }
 }
 
@@ -227,7 +238,7 @@ function editTask(newTask, currentTask) {
   priorityText[currentTask].textContent = newTask.priority;
 
   tasks[currentTask] = newTask;
-  deleteTask(tasks.length - 1);
 
+  deleteTask(tasks.length - 1);
   resetModal();
 }

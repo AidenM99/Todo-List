@@ -38,12 +38,14 @@ header {
   padding: 10px 30px;
 }
 
-.sidebar-item {
+.sidebar-item,
+#add-project {
   padding: 5px 10px;
   border-radius: 2px;
 }
 
-.sidebar-item:hover {
+.sidebar-item:hover,
+#add-project:hover {
   background-color: var(--color-darker-grey);
   cursor: pointer;
 }
