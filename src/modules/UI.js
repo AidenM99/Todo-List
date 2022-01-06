@@ -20,6 +20,20 @@ function initSidebar() {
       filterTodo(id);
     });
   });
+
+  const addProject = document.querySelector(".add-project");
+  const projectPopup = document.querySelector(".project-popup");
+  const cancel = document.querySelector(".cancel");
+
+  addProject.addEventListener("click", () => {
+    addProject.classList.toggle("hide");
+    projectPopup.classList.toggle("hide");
+  });
+
+  cancel.addEventListener("click", () => {
+    addProject.classList.toggle("hide");
+    projectPopup.classList.toggle("hide");
+  });
 }
 
 function initModal() {
@@ -36,6 +50,15 @@ function initModal() {
     } else {
       const newTask = createTask(e);
       editTask(newTask, getClickedTask(currentTask));
+    }
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".modal-content")) {
+      modalDisplayController(e.target.id);
+      if (e.target.id != "edit") {
+        resetModal();
+      }
     }
   });
 }
@@ -72,25 +95,11 @@ function filterTodo(id) {
   }
 }
 
-document.addEventListener("click", (e) => {
-  if (
-    !e.target.closest(".modal-content") &&
-    !e.target.classList.contains(".modal-button") &&
-    e.target.id != "new-todo" &&
-    e.target.id != "edit" &&
-    e.target.id != "info"
-  ) {
-    modalDisplayController();
-    resetModal();
-  }
-});
-
 function modalDisplayController(id) {
   const modalHeading = document.querySelector(".modal-heading");
   const modalButton = document.querySelector(".modal-button");
   const todoModal = document.getElementById("todo-modal");
   const infoModal = document.getElementById("info-modal");
-  const addProject = document.getElementById("add-project ");
 
   switch (id) {
     case "new-todo":
@@ -103,10 +112,11 @@ function modalDisplayController(id) {
       modalHeading.textContent = "Edit Todo";
       modalButton.textContent = "Update Task";
       break;
-    case "add-project":
-      break;
     case "info":
       infoModal.style.display = "flex";
+      break;
+    case "add-project":
+      createProject();
       break;
     default:
       infoModal.style.display = "none";
@@ -242,3 +252,5 @@ function editTask(newTask, currentTask) {
   deleteTask(tasks.length - 1);
   resetModal();
 }
+
+function createProject() {}

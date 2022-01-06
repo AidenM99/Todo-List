@@ -39,13 +39,13 @@ header {
 }
 
 .sidebar-item,
-#add-project {
+.add-project {
   padding: 5px 10px;
   border-radius: 2px;
 }
 
 .sidebar-item:hover,
-#add-project:hover {
+.add-project:hover {
   background-color: var(--color-darker-grey);
   cursor: pointer;
 }
@@ -70,16 +70,6 @@ header {
   margin: 0;
 }
 
-.modal-button {
-  border-radius: 2px;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-.modal-button:hover {
-  background-color: var(--color-darker-grey);
-}
-
 .add-icon {
   margin: 0 5px;
 }
@@ -90,27 +80,13 @@ header {
   border-bottom: solid 2px var(--color-orange);
 }
 
-#new-todo,
-.modal-button {
-  display: inline-block;
-  padding: 0.35em 1.2em;
-  margin: 0 0 5px 0;
-  border: 0.1em solid #ffffff;
-  border-radius: 0.12em;
-  box-sizing: border-box;
-  text-decoration: none;
-  font-family: "Poppins", sans-serif;
-  font-weight: bold;
-  color: #ffffff;
-  text-align: center;
-  transition: all 0.2s;
-  cursor: pointer;
-  background-color: var(--color-orange);
-}
-
-.newTodo:hover {
+.add-project {
+  background-color: var(--color-grey);
   color: #000000;
-  background-color: #ffffff;
+  border: none;
+  font-size: 16px;
+  font-weight: normal;
+  padding: 5px 10px;
 }
 
 .todo-list {
@@ -214,11 +190,6 @@ input[type="date"],
   width: 262px;
 }
 
-.modal-button-container {
-  text-align: center;
-  margin-top: 20px;
-}
-
 .info {
   color: #000000;
   margin: 0;
@@ -228,4 +199,68 @@ input[type="date"],
 .description {
   margin-bottom: 10px;
   border-bottom: 3px solid var(--color-darker-grey);
+}
+
+.project-input {
+  width: calc(100% - 13px);
+  padding: 5px;
+  border: 1.5px solid var(--color-darker-grey);
+  outline: none;
+}
+
+.hide {
+  display: none;
+}
+
+/***** Buttons *****/
+button {
+  padding: 0.35em 1.2em;
+  margin: 0 0 5px 0;
+  border: 0.1em solid #ffffff;
+  border-radius: 0.12em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+  transition: all 0.2s;
+  cursor: pointer;
+  background-color: var(--color-orange);
+}
+
+.modal-button-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.modal-button {
+  border-radius: 2px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.modal-button:hover {
+  background-color: var(--color-darker-grey);
+}
+
+.project-popup-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.add,
+.cancel {
+  width: 45%;
+  margin-top: 10px;
+  height: 30px;
+  border: none;
+}
+
+.add {
+  background-color: rgba(0, 255, 127, 0.9);
+}
+
+.cancel {
+  background-color: rgba(220, 20, 60, 0.6);
 }

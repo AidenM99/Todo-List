@@ -29,11 +29,20 @@
               <i class="far fa-calendar-alt icon"></i>Week
             </p>
           </div>
-          <div class="projects">
+          <div class="projects-container">
             <h2 class="projects-heading">Projects</h2>
-            <p id="add-project">
-              <i class="fas fa-plus-square icon"></i>Add a Project
-            </p>
+            <div class="projects">
+              <button id="add-project" class="add-project">
+                <i class="fas fa-plus-square icon"></i>Add a Project
+              </button>
+              <div class="project-popup hide">
+                <input type="text" class="project-input" />
+                <div class="project-popup-buttons">
+                  <button class="add">Add</button>
+                  <button class="cancel">Cancel</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
