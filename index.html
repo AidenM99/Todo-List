@@ -19,20 +19,20 @@
         <!-----Todo Sidebar----->
         <div class="sidebar">
           <div class="filter">
-            <p id="Inbox" class="sidebar-item">
+            <button id="Inbox" class="sidebar-item">
               <i class="fas fa-inbox icon"></i>Inbox
-            </p>
-            <p id="Today" class="sidebar-item">
+            </button>
+            <button id="Today" class="sidebar-item">
               <i class="far fa-calendar-times icon"></i>Today
-            </p>
-            <p id="Week" class="sidebar-item">
+            </button>
+            <button id="Week" class="sidebar-item">
               <i class="far fa-calendar-alt icon"></i>Week
-            </p>
+            </button>
           </div>
           <div class="projects-container">
             <h2 class="projects-heading">Projects</h2>
             <div class="projects">
-              <button id="add-project" class="add-project">
+              <button id="project-button" class="project-button">
                 <i class="fas fa-plus-square icon"></i>Add a Project
               </button>
               <div class="project-popup hide">
@@ -65,7 +65,7 @@
               <label for="task">Task:</label>
               <input
                 type="text"
-                id="task"
+                id="name"
                 class="modal-field"
                 placeholder="Task"
                 required
