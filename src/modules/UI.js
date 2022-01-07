@@ -53,10 +53,11 @@ function initModal() {
 
   const modalButton = document.querySelector(".modal-button");
   modalButton.addEventListener("click", (e) => {
-    if (e.target.textContent === "Add Task") {
+    const buttonText = e.target.textContent
+    if (buttonText === "Add Task") {
       createTask();
     } else {
-      const newTask = createTask(e);
+      const newTask = createTask(buttonText);
       editTask(newTask, getClickedTask(currentTask));
     }
   });
@@ -141,7 +142,7 @@ function resetModal() {
   }
 }
 
-function createTask(e) {
+function createTask(buttonText) {
   const taskVal = document.getElementById("name").value;
 
   const descVal = document.getElementById("description").value;
@@ -149,6 +150,8 @@ function createTask(e) {
   const dateVal = document.getElementById("due-date").value;
 
   const priorityVal = document.getElementById("priority").value;
+
+  const currentFilter = document.querySelector(".sub-heading").textContent;
 
   if (!taskVal || !descVal || !dateVal)
     return alert("All fields must be filled");
@@ -161,9 +164,10 @@ function createTask(e) {
 
   tasks.push(newTask);
 
-  if (e) return newTask;
+  if (buttonText === "Update Task") return newTask;
 
   displayTask(taskVal, formatDate, priorityVal);
+  filterTodo(currentFilter);
   resetModal();
 }
 

@@ -71,6 +71,7 @@ header {
 .projects-heading {
   padding-bottom: 5px;
   border-bottom: solid 2px var(--color-orange);
+  margin-bottom: 14.92px;
 }
 
 .project-popup-buttons {
