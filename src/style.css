@@ -87,6 +87,8 @@ header {
   font-size: 16px;
   font-weight: normal;
   padding: 5px 10px;
+  width: 100%;
+  text-align: left;
 }
 
 .todo-list {
