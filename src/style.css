@@ -38,14 +38,28 @@ header {
   padding: 10px 30px;
 }
 
+.sidebar-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin: 10px 0;
+}
+
 .sidebar-item,
-.add-project {
+.project-button {
   padding: 5px 10px;
   border-radius: 2px;
+  background-color: var(--color-grey);
+  color: #000000;
+  border: none;
+  font-size: 16px;
+  font-weight: normal;
+  width: 100%;
+  text-align: left;
 }
 
 .sidebar-item:hover,
-.add-project:hover {
+.project-button:hover {
   background-color: var(--color-darker-grey);
   cursor: pointer;
 }
@@ -57,6 +71,27 @@ header {
 .projects-heading {
   padding-bottom: 5px;
   border-bottom: solid 2px var(--color-orange);
+}
+
+.project-popup-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.add,
+.cancel {
+  width: 45%;
+  margin-top: 10px;
+  height: 30px;
+  border: none;
+}
+
+.add {
+  background-color: rgba(0, 255, 127, 0.9);
+}
+
+.cancel {
+  background-color: rgba(220, 20, 60, 0.6);
 }
 
 /*****Todo Main Section*****/
@@ -78,17 +113,6 @@ header {
   display: flex;
   justify-content: space-between;
   border-bottom: solid 2px var(--color-orange);
-}
-
-.add-project {
-  background-color: var(--color-grey);
-  color: #000000;
-  border: none;
-  font-size: 16px;
-  font-weight: normal;
-  padding: 5px 10px;
-  width: 100%;
-  text-align: left;
 }
 
 .todo-list {
@@ -187,6 +211,21 @@ input[type="date"],
   font-family: "Poppins", sans-serif;
 }
 
+.modal-button-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.modal-button {
+  border-radius: 2px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.modal-button:hover {
+  background-color: var(--color-darker-grey);
+}
+
 #priority {
   height: 37px;
   width: 262px;
@@ -229,40 +268,4 @@ button {
   transition: all 0.2s;
   cursor: pointer;
   background-color: var(--color-orange);
-}
-
-.modal-button-container {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.modal-button {
-  border-radius: 2px;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-.modal-button:hover {
-  background-color: var(--color-darker-grey);
-}
-
-.project-popup-buttons {
-  display: flex;
-  justify-content: space-between;
-}
-
-.add,
-.cancel {
-  width: 45%;
-  margin-top: 10px;
-  height: 30px;
-  border: none;
-}
-
-.add {
-  background-color: rgba(0, 255, 127, 0.9);
-}
-
-.cancel {
-  background-color: rgba(220, 20, 60, 0.6);
 }

@@ -1,4 +1,5 @@
 import Task from "./Task";
+import Project from "./Project";
 import { format, isThisWeek } from "date-fns";
 
 export default function initialiseUI() {
@@ -21,17 +22,24 @@ function initSidebar() {
     });
   });
 
-  const addProject = document.querySelector(".add-project");
+  const projectButton = document.querySelector(".project-button");
   const projectPopup = document.querySelector(".project-popup");
+  const addProject = document.querySelector(".add");
   const cancel = document.querySelector(".cancel");
 
-  addProject.addEventListener("click", () => {
-    addProject.classList.toggle("hide");
+  projectButton.addEventListener("click", () => {
+    projectButton.classList.toggle("hide");
     projectPopup.classList.toggle("hide");
   });
 
+  addProject.addEventListener("click", () => {
+    projectButton.classList.toggle("hide");
+    projectPopup.classList.toggle("hide");
+    createProject();
+  });
+
   cancel.addEventListener("click", () => {
-    addProject.classList.toggle("hide");
+    projectButton.classList.toggle("hide");
     projectPopup.classList.toggle("hide");
   });
 }
@@ -115,9 +123,6 @@ function modalDisplayController(id) {
     case "info":
       infoModal.style.display = "flex";
       break;
-    case "add-project":
-      createProject();
-      break;
     default:
       infoModal.style.display = "none";
       todoModal.style.display = "none";
@@ -137,17 +142,13 @@ function resetModal() {
 }
 
 function createTask(e) {
-  const taskField = document.getElementById("task");
-  const taskVal = taskField.value;
+  const taskVal = document.getElementById("name").value;
 
-  const descField = document.getElementById("description");
-  const descVal = descField.value;
+  const descVal = document.getElementById("description").value;
 
-  const dateField = document.getElementById("due-date");
-  const dateVal = dateField.value;
+  const dateVal = document.getElementById("due-date").value;
 
-  const priorityField = document.getElementById("priority");
-  const priorityVal = priorityField.value;
+  const priorityVal = document.getElementById("priority").value;
 
   if (!taskVal || !descVal || !dateVal)
     return alert("All fields must be filled");
@@ -177,7 +178,6 @@ function displayTask(task, date, priority) {
     const id = e.target.id;
     const targetNode = e.target.parentNode.parentNode;
     const taskName = listElement.childNodes[0].textContent;
-
     handleTaskIcons(id, targetNode, taskName);
   });
 
@@ -211,7 +211,7 @@ function handleTaskIcons(id, targetNode, taskName) {
 }
 
 function getClickedTask(taskName) {
-  return tasks.findIndex((task) => task.task === taskName);
+  return tasks.findIndex((task) => task.name === taskName);
 }
 
 function getTaskDescription(clickedTask) {
@@ -243,7 +243,7 @@ function editTask(newTask, currentTask) {
   const dateText = document.querySelectorAll(".date-text");
   const priorityText = document.querySelectorAll(".priority-text");
 
-  taskName[currentTask].textContent = newTask.task;
+  taskName[currentTask].textContent = newTask.name;
   dateText[currentTask].textContent = newTask.dueDate;
   priorityText[currentTask].textContent = newTask.priority;
 
@@ -253,4 +253,29 @@ function editTask(newTask, currentTask) {
   resetModal();
 }
 
-function createProject() {}
+function createProject() {
+  const projectName = document.querySelector(".project-input").value;
+
+  const newProject = new Project(projectName);
+
+  displayProject();
+}
+
+function displayProject() {
+  const projects = document.querySelector(".projects");
+  const projectInput = document.querySelector(".project-input");
+
+  const projectButton = document.createElement("button");
+  projectButton.textContent = projectInput.value;
+  projectButton.id = projectInput.value;
+  projectButton.classList.add("project-button");
+  projectInput.value = "";
+  projectButton.addEventListener("click", (e) => {
+    changeSubHeading(e.target.id);
+  });
+
+  projects.insertBefore(
+    projectButton,
+    projects.childNodes[projects.childNodes.length - 4]
+  );
+}
