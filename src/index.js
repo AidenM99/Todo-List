@@ -1,4 +1,5 @@
 import "./style.css";
-import initialiseUI from "./modules/UI.js";
+import { initModal, initSidebar } from "./modules/UI.js";
 
-initialiseUI();
+initSidebar();
+initModal();

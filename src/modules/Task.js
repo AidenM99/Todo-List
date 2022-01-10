@@ -16,18 +16,15 @@ export default class Task {
     return modifyDate.split("-").reverse().join("-");
   }
 
-  retrieveDate() {
-    const date = this.dueDate.slice(0, 2);
-    return date;
+  getDay() {
+    return this.dueDate.slice(0, 2);
   }
 
-  retrieveMonth() {
-    const month = this.dueDate.slice(3, 5);
-    return month;
+  getMonth() {
+    return this.dueDate.slice(3, 5);
   }
 
-  retrieveYear() {
-    const year = this.dueDate.slice(6, 10);
-    return year;
+  getYear() {
+    return this.dueDate.slice(6, 10);
   }
 }

@@ -1,63 +1,48 @@
 import Task from "./Task";
-import Project from "./Project";
-import { format, isThisWeek } from "date-fns";
+import {
+  filterTodo,
+  handleTaskIcons,
+  currentTask,
+  deleteTask,
+  getClickedTask,
+} from "./Todo";
 
-export default function initialiseUI() {
-  initSidebar();
-  initModal();
-}
+export { initSidebar, initModal, modalDisplayController, getTaskData, tasks };
 
 const tasks = [];
 
-let currentTask;
-
 function initSidebar() {
-  const sidebarItems = document.querySelectorAll(".sidebar-item");
-
-  sidebarItems.forEach((item) => {
-    item.addEventListener("click", (e) => {
-      const id = e.target.id;
-      changeSubHeading(id);
-      filterTodo(id);
-    });
+  const sidebar = document.querySelector(".sidebar");
+  sidebar.addEventListener("click", (e) => {
+    if (e.target.classList.contains("sidebar-item")) {
+      changeSubHeading(e.target.id);
+      filterTodo(e.target.id);
+    } else if (e.target.classList.contains("project-button")) {
+      projectPopupHandler();
+    }
   });
+}
 
+function projectPopupHandler() {
   const projectButton = document.querySelector(".project-button");
   const projectPopup = document.querySelector(".project-popup");
-  const addProject = document.querySelector(".add");
-  const cancel = document.querySelector(".cancel");
-
-  projectButton.addEventListener("click", () => {
-    projectButton.classList.toggle("hide");
-    projectPopup.classList.toggle("hide");
-  });
-
-  addProject.addEventListener("click", () => {
-    projectButton.classList.toggle("hide");
-    projectPopup.classList.toggle("hide");
-    createProject();
-  });
-
-  cancel.addEventListener("click", () => {
-    projectButton.classList.toggle("hide");
-    projectPopup.classList.toggle("hide");
-  });
+  projectButton.classList.toggle("hide");
+  projectPopup.classList.toggle("hide");
+  if (e.target.classList.contains(".add")) createProject();
 }
 
 function initModal() {
   const newTodo = document.getElementById("new-todo");
   newTodo.addEventListener("click", (e) => {
-    const id = e.target.id;
-    modalDisplayController(id);
+    modalDisplayController(e.target.id);
   });
 
   const modalButton = document.querySelector(".modal-button");
   modalButton.addEventListener("click", (e) => {
-    const buttonText = e.target.textContent
-    if (buttonText === "Add Task") {
+    if (e.target.textContent === "Add Task") {
       createTask();
     } else {
-      const newTask = createTask(buttonText);
+      const newTask = createTask(e);
       editTask(newTask, getClickedTask(currentTask));
     }
   });
@@ -72,36 +57,9 @@ function initModal() {
   });
 }
 
-function changeSubHeading(sidebarItem) {
+function changeSubHeading(id) {
   const subHeading = document.querySelector(".sub-heading");
-  subHeading.textContent = sidebarItem;
-}
-
-function filterTodo(id) {
-  const filter = id;
-  const today = format(new Date(), "dd/MM/yyyy");
-
-  for (let i = 0; i < tasks.length; i++) {
-    const todoElement = document.querySelectorAll(".todo-item");
-    const getTaskDate = new Date(
-      tasks[i].retrieveYear(),
-      tasks[i].retrieveMonth() - 1,
-      tasks[i].retrieveDate()
-    );
-
-    if (filter === "Inbox") {
-      todoElement[i].style.display = "flex";
-    } else if (filter === "Today" && tasks[i].dueDate === today) {
-      todoElement[i].style.display = "flex";
-    } else if (
-      filter === "Week" &&
-      isThisWeek(getTaskDate, { weekStartsOn: 1 })
-    ) {
-      todoElement[i].style.display = "flex";
-    } else {
-      todoElement[i].style.display = "none";
-    }
-  }
+  subHeading.textContent = id;
 }
 
 function modalDisplayController(id) {
@@ -142,15 +100,11 @@ function resetModal() {
   }
 }
 
-function createTask(buttonText) {
+function createTask(e) {
   const taskVal = document.getElementById("name").value;
-
   const descVal = document.getElementById("description").value;
-
   const dateVal = document.getElementById("due-date").value;
-
   const priorityVal = document.getElementById("priority").value;
-
   const currentFilter = document.querySelector(".sub-heading").textContent;
 
   if (!taskVal || !descVal || !dateVal)
@@ -164,7 +118,7 @@ function createTask(buttonText) {
 
   tasks.push(newTask);
 
-  if (buttonText === "Update Task") return newTask;
+  if (e) return newTask;
 
   displayTask(taskVal, formatDate, priorityVal);
   filterTodo(currentFilter);
@@ -201,33 +155,6 @@ function displayTask(task, date, priority) {
   todoSection.appendChild(todoList);
 }
 
-function handleTaskIcons(id, targetNode, taskName) {
-  if (id === "edit") {
-    currentTask = taskName;
-    modalDisplayController(id);
-    getTaskData(getClickedTask(taskName));
-  } else if (id === "info") {
-    getTaskDescription(getClickedTask(taskName));
-    modalDisplayController(id);
-  } else if (id === "delete") {
-    deleteTask(getClickedTask(taskName), targetNode);
-  }
-}
-
-function getClickedTask(taskName) {
-  return tasks.findIndex((task) => task.name === taskName);
-}
-
-function getTaskDescription(clickedTask) {
-  const info = document.querySelector(".info");
-  info.textContent = tasks[clickedTask].description;
-}
-
-function deleteTask(clickedTask, targetNode) {
-  if (targetNode) targetNode.remove();
-  tasks.splice(clickedTask, 1);
-}
-
 function getTaskData(clickedTask) {
   const modalFields = document.querySelectorAll(".modal-field");
 
@@ -255,31 +182,4 @@ function editTask(newTask, currentTask) {
 
   deleteTask(tasks.length - 1);
   resetModal();
-}
-
-function createProject() {
-  const projectName = document.querySelector(".project-input").value;
-
-  const newProject = new Project(projectName);
-
-  displayProject();
-}
-
-function displayProject() {
-  const projects = document.querySelector(".projects");
-  const projectInput = document.querySelector(".project-input");
-
-  const projectButton = document.createElement("button");
-  projectButton.textContent = projectInput.value;
-  projectButton.id = projectInput.value;
-  projectButton.classList.add("project-button");
-  projectInput.value = "";
-  projectButton.addEventListener("click", (e) => {
-    changeSubHeading(e.target.id);
-  });
-
-  projects.insertBefore(
-    projectButton,
-    projects.childNodes[projects.childNodes.length - 4]
-  );
 }
