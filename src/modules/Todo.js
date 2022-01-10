@@ -1,5 +1,6 @@
 import { format, isThisWeek } from "date-fns";
-import { tasks, modalDisplayController, getTaskData } from "./UI";
+import { modalDisplayController, getTaskData } from "./UI";
+import { tasks } from "./Storage";
 
 export { filterTodo, handleTaskIcons, getClickedTask, deleteTask, currentTask };
 

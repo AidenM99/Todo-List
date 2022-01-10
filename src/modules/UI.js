@@ -1,4 +1,5 @@
 import Task from "./Task";
+import { saveTodoList, getTodoList, tasks } from "./Storage";
 import {
   filterTodo,
   handleTaskIcons,
@@ -7,9 +8,14 @@ import {
   getClickedTask,
 } from "./Todo";
 
-export { initSidebar, initModal, modalDisplayController, getTaskData, tasks };
+export { loadPage, modalDisplayController, getTaskData, displayTask };
 
-const tasks = [];
+
+function loadPage() {
+  initSidebar();
+  initModal();
+  getTodoList();
+}
 
 function initSidebar() {
   const sidebar = document.querySelector(".sidebar");
@@ -107,8 +113,9 @@ function createTask(e) {
   const priorityVal = document.getElementById("priority").value;
   const currentFilter = document.querySelector(".sub-heading").textContent;
 
-  if (!taskVal || !descVal || !dateVal)
+  if (!taskVal || !descVal || !dateVal) {
     return alert("All fields must be filled");
+  }
 
   const newTask = new Task(taskVal, descVal, dateVal, priorityVal);
 
@@ -120,6 +127,7 @@ function createTask(e) {
 
   if (e) return newTask;
 
+  saveTodoList();
   displayTask(taskVal, formatDate, priorityVal);
   filterTodo(currentFilter);
   resetModal();
@@ -147,7 +155,8 @@ function displayTask(task, date, priority) {
   rightPanel.classList.add("right-panel");
   rightPanel.innerHTML = `<p class="date-text">${date}</p>
   <p class="priority-text">${priority}</p>
-  </i><i class="fas fa-edit todo-icon" id="edit"></i><i class="fas fa-info todo-icon" id="info"></i><i class="fas fa-trash todo-icon" id="delete">`;
+  <i class="fas fa-edit todo-icon" id="edit"></i><i class="fas fa-info todo-icon" id="info"></i><i class="fas fa-trash todo-icon" id="delete"></i>
+  `;
 
   listElement.appendChild(leftPanel);
   listElement.appendChild(rightPanel);
