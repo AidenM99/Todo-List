@@ -15,16 +15,4 @@ export default class Task {
     const modifyDate = this.dueDate.replaceAll("/", "-");
     return modifyDate.split("-").reverse().join("-");
   }
-
-  getDay() {
-    return this.dueDate.slice(0, 2);
-  }
-
-  getMonth() {
-    return this.dueDate.slice(3, 5);
-  }
-
-  getYear() {
-    return this.dueDate.slice(6, 10);
-  }
 }

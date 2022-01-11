@@ -8,11 +8,7 @@ function filterTodo(id) {
 
   for (let i = 0; i < getTodoList().length; i++) {
     const todoElement = document.querySelectorAll(".todo-item");
-    const getTaskDate = new Date(
-      getTodoList()[i].getYear(),
-      getTodoList()[i].getMonth() - 1,
-      getTodoList()[i].getDay()
-    );
+    const getTaskDate = new Date(getTodoList()[i].clearFormattedDate());
 
     if (filter === "Inbox") {
       todoElement[i].style.display = "flex";
