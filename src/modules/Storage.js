@@ -1,24 +1,33 @@
-import { displayTask } from "./UI";
 import Task from "./Task";
 
-export { getTodoList, saveTodoList, tasks };
+export { getTodoList, saveTodoList, addTask, removeTask };
 
-let tasks;
-
-function saveTodoList() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
+function saveTodoList(todoList) {
+  localStorage.setItem("todoList", JSON.stringify(todoList));
 }
 
 function getTodoList() {
-  if (localStorage.getItem("tasks")) {
-    tasks = JSON.parse(localStorage.getItem("tasks")).map(
-      (task) =>
-        new Task(task.name, task.description, task.dueDate, task.priority)
+  if (localStorage.getItem("todoList")) {
+    const todoList = JSON.parse(localStorage.getItem("todoList")).map((task) =>
+      Object.assign(new Task(), task)
     );
-    tasks.forEach((task) => {
-      displayTask(task.name, task.dueDate, task.priority);
-    });
+
+    return todoList;
   } else {
-    tasks = [];
+    const todoList = [];
+
+    return todoList;
   }
+}
+
+function addTask(newTask) {
+  const todoList = getTodoList();
+  todoList.push(newTask);
+  saveTodoList(todoList);
+}
+
+function removeTask(taskIndex) {
+  const todoList = getTodoList();
+  todoList.splice(taskIndex, 1);
+  saveTodoList(todoList);
 }

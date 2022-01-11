@@ -1,5 +1,5 @@
 import Task from "./Task";
-import { saveTodoList, getTodoList, tasks } from "./Storage";
+import { saveTodoList, getTodoList, addTask } from "./Storage";
 import {
   filterTodo,
   handleTaskIcons,
@@ -10,11 +10,10 @@ import {
 
 export { loadPage, modalDisplayController, getTaskData, displayTask };
 
-
 function loadPage() {
   initSidebar();
   initModal();
-  getTodoList();
+  loadTasks();
 }
 
 function initSidebar() {
@@ -106,6 +105,12 @@ function resetModal() {
   }
 }
 
+function loadTasks() {
+  getTodoList().forEach((task) => {
+    displayTask(task.name, task.dueDate, task.priority);
+  });
+}
+
 function createTask(e) {
   const taskVal = document.getElementById("name").value;
   const descVal = document.getElementById("description").value;
@@ -123,11 +128,10 @@ function createTask(e) {
 
   newTask.dueDate = formatDate;
 
-  tasks.push(newTask);
+  addTask(newTask);
 
   if (e) return newTask;
 
-  saveTodoList();
   displayTask(taskVal, formatDate, priorityVal);
   filterTodo(currentFilter);
   resetModal();
@@ -171,10 +175,10 @@ function getTaskData(clickedTask) {
     const modalFieldId = modalFields[i].id;
 
     if (i === 2) {
-      modalFields[i].value = tasks[clickedTask].clearFormattedDate();
+      modalFields[i].value = getTodoList()[clickedTask].clearFormattedDate();
       continue;
     }
-    modalFields[i].value = tasks[clickedTask][modalFieldId];
+    modalFields[i].value = getTodoList()[clickedTask][modalFieldId];
   }
 }
 
@@ -187,8 +191,8 @@ function editTask(newTask, currentTask) {
   dateText[currentTask].textContent = newTask.dueDate;
   priorityText[currentTask].textContent = newTask.priority;
 
-  tasks[currentTask] = newTask;
+  getTodoList()[currentTask] = newTask;
 
-  deleteTask(tasks.length - 1);
+  deleteTask(getTodoList().length - 1);
   resetModal();
 }
