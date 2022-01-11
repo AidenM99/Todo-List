@@ -1,7 +1,5 @@
 import Task from "./Task";
 
-export { getTodoList, saveTodoList, addTask, removeTask, editTodo };
-
 function saveTodoList(todoList) {
   localStorage.setItem("todoList", JSON.stringify(todoList));
 }
@@ -37,3 +35,5 @@ function editTodo(newTask, currentTask) {
   todoList[currentTask] = newTask;
   saveTodoList(todoList);
 }
+
+export { getTodoList, saveTodoList, addTask, removeTask, editTodo };

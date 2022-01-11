@@ -2,10 +2,6 @@ import { format, isThisWeek } from "date-fns";
 import { modalDisplayController, getTaskData } from "./UI";
 import { getTodoList, removeTask } from "./Storage";
 
-export { filterTodo, handleTaskIcons, getClickedTask, deleteTask, currentTask };
-
-let currentTask;
-
 function filterTodo(id) {
   const filter = id;
   const today = format(new Date(), "dd/MM/yyyy");
@@ -33,17 +29,31 @@ function filterTodo(id) {
   }
 }
 
-function handleTaskIcons(id, targetNode, taskName) {
-  if (id === "edit") {
-    currentTask = taskName;
-    modalDisplayController(id);
-    getTaskData(getClickedTask(taskName));
-  } else if (id === "info") {
-    modalDisplayController(id);
-    getTaskDescription(getClickedTask(taskName));
-  } else if (id === "delete") {
-    deleteTask(getClickedTask(taskName), targetNode);
+function handleTaskIcons(iconID, targetNode, targetTask) {
+  if (iconID === "edit") {
+    taskIndex.set(targetTask);
+    modalDisplayController(iconID);
+    getTaskData(targetTask);
+  } else if (iconID === "info") {
+    modalDisplayController(iconID);
+    getTaskDescription(targetTask);
+  } else if (iconID === "delete") {
+    deleteTask(targetTask, targetNode);
   }
+}
+
+const taskIndex = new getTargetTask();
+
+function getTargetTask() {
+  var task;
+  return {
+    get: function () {
+      return task;
+    },
+    set: function (val) {
+      task = val;
+    },
+  };
 }
 
 function deleteTask(taskIndex, targetNode) {
@@ -59,3 +69,5 @@ function getTaskDescription(clickedTask) {
   const info = document.querySelector(".info");
   info.textContent = getTodoList()[clickedTask].description;
 }
+
+export { filterTodo, handleTaskIcons, getClickedTask, deleteTask, taskIndex };

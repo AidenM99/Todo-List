@@ -28,4 +28,3 @@ export default class Task {
     return this.dueDate.slice(6, 10);
   }
 }
-

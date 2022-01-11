@@ -3,17 +3,21 @@ import { getTodoList, addTask, editTodo } from "./Storage";
 import {
   filterTodo,
   handleTaskIcons,
-  currentTask,
   deleteTask,
   getClickedTask,
+  taskIndex,
 } from "./Todo";
-
-export { loadPage, modalDisplayController, getTaskData, displayTask };
 
 function loadPage() {
   initSidebar();
   initModal();
   loadTasks();
+}
+
+function loadTasks() {
+  getTodoList().forEach((task) => {
+    displayTask(task);
+  });
 }
 
 function initSidebar() {
@@ -28,14 +32,6 @@ function initSidebar() {
   });
 }
 
-function projectPopupHandler() {
-  const projectButton = document.querySelector(".project-button");
-  const projectPopup = document.querySelector(".project-popup");
-  projectButton.classList.toggle("hide");
-  projectPopup.classList.toggle("hide");
-  if (e.target.classList.contains(".add")) createProject();
-}
-
 function initModal() {
   const newTodo = document.getElementById("new-todo");
   newTodo.addEventListener("click", (e) => {
@@ -44,12 +40,7 @@ function initModal() {
 
   const modalButton = document.querySelector(".modal-button");
   modalButton.addEventListener("click", (e) => {
-    if (e.target.textContent === "Add Task") {
-      createTask();
-    } else {
-      const newTask = createTask(e);
-      editTask(newTask, getClickedTask(currentTask));
-    }
+    modalEventsHandler(e.target.textContent);
   });
 
   document.addEventListener("click", (e) => {
@@ -67,29 +58,43 @@ function changeSubHeading(id) {
   subHeading.textContent = id;
 }
 
+function projectPopupHandler() {
+  const projectButton = document.querySelector(".project-button");
+  const projectPopup = document.querySelector(".project-popup");
+  projectButton.classList.toggle("hide");
+  projectPopup.classList.toggle("hide");
+  if (e.target.classList.contains(".add")) createProject();
+}
+
+function modalEventsHandler(targetText) {
+  if (targetText === "Add Task") {
+    createTask();
+  } else {
+    const updateTask = true;
+    const newTask = createTask(updateTask);
+    editTask(newTask);
+  }
+}
+
 function modalDisplayController(id) {
   const modalHeading = document.querySelector(".modal-heading");
   const modalButton = document.querySelector(".modal-button");
   const todoModal = document.getElementById("todo-modal");
   const infoModal = document.getElementById("info-modal");
 
-  switch (id) {
-    case "new-todo":
-      todoModal.style.display = "flex";
-      modalHeading.textContent = "New Todo";
-      modalButton.textContent = "Add Task";
-      break;
-    case "edit":
-      todoModal.style.display = "flex";
-      modalHeading.textContent = "Edit Todo";
-      modalButton.textContent = "Update Task";
-      break;
-    case "info":
-      infoModal.style.display = "flex";
-      break;
-    default:
-      infoModal.style.display = "none";
-      todoModal.style.display = "none";
+  if (id === "new-todo") {
+    todoModal.style.display = "flex";
+    modalHeading.textContent = "New Todo";
+    modalButton.textContent = "Add Task";
+  } else if (id === "edit") {
+    todoModal.style.display = "flex";
+    modalHeading.textContent = "Edit Todo";
+    modalButton.textContent = "Update Task";
+  } else if (id === "info") {
+    infoModal.style.display = "flex";
+  } else {
+    infoModal.style.display = "none";
+    todoModal.style.display = "none";
   }
 }
 
@@ -101,43 +106,35 @@ function resetModal() {
       modalFields[i].value = "Low";
       continue;
     }
+
     modalFields[i].value = "";
   }
 }
 
-function loadTasks() {
-  getTodoList().forEach((task) => {
-    displayTask(task.name, task.dueDate, task.priority);
-  });
-}
-
-function createTask(e) {
-  const taskVal = document.getElementById("name").value;
-  const descVal = document.getElementById("description").value;
-  const dateVal = document.getElementById("due-date").value;
-  const priorityVal = document.getElementById("priority").value;
+function createTask(updateTask) {
+  const name = document.getElementById("name").value;
+  const desc = document.getElementById("description").value;
+  const date = document.getElementById("due-date").value;
+  const priority = document.getElementById("priority").value;
   const currentFilter = document.querySelector(".sub-heading").textContent;
 
-  if (!taskVal || !descVal || !dateVal) {
+  if (!name || !desc || !date) {
     return alert("All fields must be filled");
   }
 
-  const newTask = new Task(taskVal, descVal, dateVal, priorityVal);
-
-  const formatDate = newTask.formatDate();
-
-  newTask.dueDate = formatDate;
+  const newTask = new Task(name, desc, date, priority);
+  newTask.dueDate = newTask.formatDate();
 
   addTask(newTask);
 
-  if (e) return newTask;
+  if (updateTask) return newTask;
 
-  displayTask(taskVal, formatDate, priorityVal);
+  displayTask(newTask);
   filterTodo(currentFilter);
   resetModal();
 }
 
-function displayTask(task, date, priority) {
+function displayTask(task) {
   const todoSection = document.querySelector(".todo-main");
 
   const todoList = document.querySelector(".todo-list");
@@ -147,18 +144,18 @@ function displayTask(task, date, priority) {
   listElement.addEventListener("click", (e) => {
     const id = e.target.id;
     const targetNode = e.target.parentNode.parentNode;
-    const taskName = listElement.childNodes[0].textContent;
+    const taskName = getClickedTask(listElement.childNodes[0].textContent);
     handleTaskIcons(id, targetNode, taskName);
   });
 
   const leftPanel = document.createElement("div");
   leftPanel.classList.add("left-panel");
-  leftPanel.innerHTML = `<i class="far fa-circle"></i><p class="task-name">${task}</p>`;
+  leftPanel.innerHTML = `<i class="far fa-circle"></i><p class="task-name">${task.name}</p>`;
 
   const rightPanel = document.createElement("div");
   rightPanel.classList.add("right-panel");
-  rightPanel.innerHTML = `<p class="date-text">${date}</p>
-  <p class="priority-text">${priority}</p>
+  rightPanel.innerHTML = `<p class="date-text">${task.dueDate}</p>
+  <p class="priority-text">${task.priority}</p>
   <i class="fas fa-edit todo-icon" id="edit"></i><i class="fas fa-info todo-icon" id="info"></i><i class="fas fa-trash todo-icon" id="delete"></i>
   `;
 
@@ -178,22 +175,24 @@ function getTaskData(clickedTask) {
       modalFields[i].value = getTodoList()[clickedTask].clearFormattedDate();
       continue;
     }
+
     modalFields[i].value = getTodoList()[clickedTask][modalFieldId];
   }
 }
 
-function editTask(newTask, currentTask) {
+function editTask(newTask) {
+  const index = taskIndex.get();
   const taskName = document.querySelectorAll(".task-name");
   const dateText = document.querySelectorAll(".date-text");
   const priorityText = document.querySelectorAll(".priority-text");
 
-  taskName[currentTask].textContent = newTask.name;
-  dateText[currentTask].textContent = newTask.dueDate;
-  priorityText[currentTask].textContent = newTask.priority;
+  taskName[index].textContent = newTask.name;
+  dateText[index].textContent = newTask.dueDate;
+  priorityText[index].textContent = newTask.priority;
 
-
-  
-  editTodo(newTask, currentTask);
+  editTodo(newTask, index);
   deleteTask(getTodoList().length - 1);
   resetModal();
 }
+
+export { loadPage, modalDisplayController, getTaskData, displayTask };
