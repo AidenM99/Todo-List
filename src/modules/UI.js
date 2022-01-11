@@ -1,5 +1,5 @@
 import Task from "./Task";
-import { saveTodoList, getTodoList, addTask } from "./Storage";
+import { getTodoList, addTask, editTodo } from "./Storage";
 import {
   filterTodo,
   handleTaskIcons,
@@ -191,8 +191,9 @@ function editTask(newTask, currentTask) {
   dateText[currentTask].textContent = newTask.dueDate;
   priorityText[currentTask].textContent = newTask.priority;
 
-  getTodoList()[currentTask] = newTask;
 
+  
+  editTodo(newTask, currentTask);
   deleteTask(getTodoList().length - 1);
   resetModal();
 }

@@ -1,6 +1,6 @@
 import Task from "./Task";
 
-export { getTodoList, saveTodoList, addTask, removeTask };
+export { getTodoList, saveTodoList, addTask, removeTask, editTodo };
 
 function saveTodoList(todoList) {
   localStorage.setItem("todoList", JSON.stringify(todoList));
@@ -29,5 +29,11 @@ function addTask(newTask) {
 function removeTask(taskIndex) {
   const todoList = getTodoList();
   todoList.splice(taskIndex, 1);
+  saveTodoList(todoList);
+}
+
+function editTodo(newTask, currentTask) {
+  const todoList = getTodoList();
+  todoList[currentTask] = newTask;
   saveTodoList(todoList);
 }
