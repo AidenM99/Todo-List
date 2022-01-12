@@ -79,11 +79,10 @@ header {
   justify-content: space-between;
 }
 
-.add,
-.cancel {
+.project-popup-buttons > button {
+  text-align: center;
   width: 45%;
   margin-top: 10px;
-  height: 30px;
   border: none;
 }
 
@@ -245,9 +244,9 @@ input[type="date"],
 
 .project-input {
   width: calc(100% - 13px);
-  padding: 5px;
+  padding: 10px 5px;
   border: 1.5px solid var(--color-darker-grey);
-  outline: none;
+  outline: none;  
 }
 
 .hide {
