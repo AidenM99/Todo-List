@@ -134,7 +134,7 @@ function createTask(updateTask) {
 
   addTask(newTask);
 
-  if (filter !== "Inbox" || filter !== "Today" || filter !== "Week") {
+  if (filter != "Inbox" && filter !== "Today" && filter !== "Week") {
     addTaskToProject(newTask, filter);
   }
 
