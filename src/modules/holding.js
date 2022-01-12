@@ -86,10 +86,11 @@ function filterTodo(id) {
     const projectInput = document.querySelector(".project-input");
   
     const projectButton = document.createElement("button");
+    projectButton.classList.add("project-button");
     projectButton.textContent = projectInput.value;
     projectButton.id = projectInput.value;
-    projectButton.classList.add("project-button");
     projectInput.value = "";
+
     projectButton.addEventListener("click", (e) => {
       changeSubHeading(e.target.id);
       filterTodo(e.target.id);

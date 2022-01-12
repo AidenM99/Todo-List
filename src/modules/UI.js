@@ -1,5 +1,12 @@
 import Task from "./Task";
-import { getTodoList, addTask, editTodo } from "./Storage";
+import Project from "./Project";
+import {
+  getTasks,
+  addTask,
+  editTodo,
+  addProject,
+  addTaskToProject,
+} from "./Storage";
 import {
   filterTodo,
   handleTaskIcons,
@@ -15,7 +22,7 @@ function loadPage() {
 }
 
 function loadTasks() {
-  getTodoList().forEach((task) => {
+  getTasks().forEach((task) => {
     displayTask(task);
   });
 }
@@ -27,7 +34,7 @@ function initSidebar() {
       changeSubHeading(e.target.id);
       filterTodo(e.target.id);
     } else if (e.target.classList.contains("project-button")) {
-      projectPopupHandler();
+      projectPopupHandler(e);
     }
   });
 }
@@ -58,12 +65,12 @@ function changeSubHeading(id) {
   subHeading.textContent = id;
 }
 
-function projectPopupHandler() {
+function projectPopupHandler(e) {
   const projectButton = document.querySelector(".project-button");
   const projectPopup = document.querySelector(".project-popup");
   projectButton.classList.toggle("hide");
   projectPopup.classList.toggle("hide");
-  if (e.target.classList.contains(".add")) createProject();
+  if (e.target.classList.contains("add")) createProject();
 }
 
 function modalEventsHandler(targetText) {
@@ -116,7 +123,7 @@ function createTask(updateTask) {
   const desc = document.getElementById("description").value;
   const date = document.getElementById("due-date").value;
   const priority = document.getElementById("priority").value;
-  const currentFilter = document.querySelector(".sub-heading").textContent;
+  const filter = document.querySelector(".sub-heading").textContent;
 
   if (!name || !desc || !date) {
     return alert("All fields must be filled");
@@ -127,10 +134,14 @@ function createTask(updateTask) {
 
   addTask(newTask);
 
+  if (filter !== "Inbox" || filter !== "Today" || filter !== "Week") {
+    addTaskToProject(newTask, filter);
+  }
+
   if (updateTask) return newTask;
 
   displayTask(newTask);
-  filterTodo(currentFilter);
+  filterTodo(filter);
   resetModal();
 }
 
@@ -172,11 +183,11 @@ function getTaskData(clickedTask) {
     const modalFieldId = modalFields[i].id;
 
     if (i === 2) {
-      modalFields[i].value = getTodoList()[clickedTask].clearFormattedDate();
+      modalFields[i].value = getTasks()[clickedTask].clearFormattedDate();
       continue;
     }
 
-    modalFields[i].value = getTodoList()[clickedTask][modalFieldId];
+    modalFields[i].value = getTasks()[clickedTask][modalFieldId];
   }
 }
 
@@ -191,8 +202,38 @@ function editTask(newTask) {
   priorityText[index].textContent = newTask.priority;
 
   editTodo(newTask, index);
-  deleteTask(getTodoList().length - 1);
+  deleteTask(getTasks().length - 1);
   resetModal();
+}
+
+function createProject() {
+  const projectName = document.querySelector(".project-input").value;
+
+  const newProject = new Project(projectName);
+
+  addProject(newProject);
+  displayProject();
+}
+
+function displayProject() {
+  const projects = document.querySelector(".projects");
+  const projectInput = document.querySelector(".project-input");
+
+  const projectButton = document.createElement("button");
+  projectButton.classList.add("new-project-button");
+  projectButton.textContent = projectInput.value;
+  projectButton.id = projectInput.value;
+  projectInput.value = "";
+
+  projectButton.addEventListener("click", (e) => {
+    changeSubHeading(e.target.id);
+    filterTodo(e.target.id);
+  });
+
+  projects.insertBefore(
+    projectButton,
+    projects.childNodes[projects.childNodes.length - 4]
+  );
 }
 
 export { loadPage, modalDisplayController, getTaskData, displayTask };

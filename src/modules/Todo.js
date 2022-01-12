@@ -1,18 +1,18 @@
 import { format, isThisWeek } from "date-fns";
 import { modalDisplayController, getTaskData } from "./UI";
-import { getTodoList, removeTask } from "./Storage";
+import { getTasks, removeTask } from "./Storage";
 
 function filterTodo(id) {
   const filter = id;
   const today = format(new Date(), "dd/MM/yyyy");
 
-  for (let i = 0; i < getTodoList().length; i++) {
+  for (let i = 0; i < getTasks().length; i++) {
     const todoElement = document.querySelectorAll(".todo-item");
-    const getTaskDate = new Date(getTodoList()[i].clearFormattedDate());
+    const getTaskDate = new Date(getTasks()[i].clearFormattedDate());
 
     if (filter === "Inbox") {
       todoElement[i].style.display = "flex";
-    } else if (filter === "Today" && getTodoList()[i].dueDate === today) {
+    } else if (filter === "Today" && getTasks()[i].dueDate === today) {
       todoElement[i].style.display = "flex";
     } else if (
       filter === "Week" &&
@@ -58,12 +58,12 @@ function deleteTask(taskIndex, targetNode) {
 }
 
 function getClickedTask(taskName) {
-  return getTodoList().findIndex((task) => task.name === taskName);
+  return getTasks().findIndex((task) => task.name === taskName);
 }
 
 function getTaskDescription(clickedTask) {
   const info = document.querySelector(".info");
-  info.textContent = getTodoList()[clickedTask].description;
+  info.textContent = getTasks()[clickedTask].description;
 }
 
 export { filterTodo, handleTaskIcons, getClickedTask, deleteTask, taskIndex };
