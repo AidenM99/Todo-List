@@ -1,27 +1,52 @@
 import { format, isThisWeek } from "date-fns";
-import { modalDisplayController, getTaskData } from "./UI";
-import { getTasks, removeTask } from "./Storage";
+import { modalDisplayController, getTaskData, displayTask } from "./UI";
+import {
+  getTodoList,
+  removeTask,
+  updateTodayProjects,
+  updateWeekProjects,
+} from "./Storage";
+import Project from "./Project";
+
+class TodoList {
+  constructor() {
+    this.projects = [];
+    this.projects.push(new Project("Inbox"));
+    this.projects.push(new Project("Today"));
+    this.projects.push(new Project("Week"));
+  }
+
+  setProjects(projects) {
+    this.projects = projects;
+  }
+
+  getProjects() {
+    return this.projects;
+  }
+
+  getProject(projectName) {
+    return this.projects.find((project) => project.name === projectName);
+  }
+}
 
 function filterTodo(id) {
   const filter = id;
   const today = format(new Date(), "dd/MM/yyyy");
+  const todoElement = document.querySelectorAll(".todo-item");
+  updateTodayProjects(today);
+  updateWeekProjects();
+  removeElements(todoElement);
 
-  for (let i = 0; i < getTasks().length; i++) {
-    const todoElement = document.querySelectorAll(".todo-item");
-    const getTaskDate = new Date(getTasks()[i].clearFormattedDate());
+  getTodoList()
+    .getProject(filter)
+    .projects.forEach((project) => {
+      displayTask(project);
+    });
+}
 
-    if (filter === "Inbox") {
-      todoElement[i].style.display = "flex";
-    } else if (filter === "Today" && getTasks()[i].dueDate === today) {
-      todoElement[i].style.display = "flex";
-    } else if (
-      filter === "Week" &&
-      isThisWeek(getTaskDate, { weekStartsOn: 1 })
-    ) {
-      todoElement[i].style.display = "flex";
-    } else {
-      todoElement[i].style.display = "none";
-    }
+function removeElements(todo) {
+  for (let i = 0; i < todo.length; i++) {
+    todo[i].parentNode.removeChild(todo[i]);
   }
 }
 
@@ -58,12 +83,27 @@ function deleteTask(taskIndex, targetNode) {
 }
 
 function getClickedTask(taskName) {
-  return getTasks().findIndex((task) => task.name === taskName);
+  return getTodoList().findIndex((task) => task.name === taskName);
 }
 
 function getTaskDescription(clickedTask) {
   const info = document.querySelector(".info");
-  info.textContent = getTasks()[clickedTask].description;
+  info.textContent = getTodoList()[clickedTask].description;
 }
 
-export { filterTodo, handleTaskIcons, getClickedTask, deleteTask, taskIndex };
+function checkWeek(project) {
+  const week = isThisWeek(new Date(project.clearFormattedDate()), {
+    weekStartsOn: 1,
+  });
+  return week;
+}
+
+export {
+  filterTodo,
+  handleTaskIcons,
+  getClickedTask,
+  deleteTask,
+  taskIndex,
+  TodoList,
+  checkWeek,
+};

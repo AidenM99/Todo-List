@@ -1,7 +1,7 @@
 import Task from "./Task";
 import Project from "./Project";
 import {
-  getTasks,
+  getTodoList,
   addTask,
   editTodo,
   addProject,
@@ -22,9 +22,11 @@ function loadPage() {
 }
 
 function loadTasks() {
-  getTasks().forEach((task) => {
-    displayTask(task);
-  });
+  getTodoList()
+    .getProject("Inbox")
+    .projects.forEach((task) => {
+      displayTask(task);
+    });
 }
 
 function initSidebar() {
@@ -132,7 +134,7 @@ function createTask(updateTask) {
   const newTask = new Task(name, desc, date, priority);
   newTask.dueDate = newTask.formatDate();
 
-  addTask(newTask);
+  addTask(filter, newTask);
 
   if (filter != "Inbox" && filter !== "Today" && filter !== "Week") {
     addTaskToProject(newTask, filter);
@@ -142,6 +144,7 @@ function createTask(updateTask) {
 
   displayTask(newTask);
   filterTodo(filter);
+  return;
   resetModal();
 }
 
@@ -183,11 +186,11 @@ function getTaskData(clickedTask) {
     const modalFieldId = modalFields[i].id;
 
     if (i === 2) {
-      modalFields[i].value = getTasks()[clickedTask].clearFormattedDate();
+      modalFields[i].value = getTodoList()[clickedTask].clearFormattedDate();
       continue;
     }
 
-    modalFields[i].value = getTasks()[clickedTask][modalFieldId];
+    modalFields[i].value = getTodoList()[clickedTask][modalFieldId];
   }
 }
 
@@ -202,7 +205,7 @@ function editTask(newTask) {
   priorityText[index].textContent = newTask.priority;
 
   editTodo(newTask, index);
-  deleteTask(getTasks().length - 1);
+  deleteTask(getTodoList().length - 1);
   resetModal();
 }
 
