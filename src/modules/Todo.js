@@ -1,5 +1,5 @@
 import { format, isThisWeek } from "date-fns";
-import { modalDisplayController, getTaskData, displayTask } from "./UI";
+import { getTaskData, displayTask, getTaskDescription } from "./UI";
 import {
   getTodoList,
   removeTask,
@@ -27,14 +27,19 @@ class TodoList {
   getProject(projectName) {
     return this.projects.find((project) => project.name === projectName);
   }
+
+  addProject(newProject) {
+    this.projects.push(newProject);
+  }
 }
 
 function filterTodo(id) {
   const filter = id;
   const today = format(new Date(), "dd/MM/yyyy");
   const todoElement = document.querySelectorAll(".todo-item");
-  updateTodayProjects(today);
+
   updateWeekProjects();
+  updateTodayProjects(today);
   removeElements(todoElement);
 
   getTodoList()
@@ -50,20 +55,18 @@ function removeElements(todo) {
   }
 }
 
-function handleTaskIcons(iconID, targetNode, targetTask) {
+function handleTaskIcons(iconID, listElement, elementName) {
   if (iconID === "edit") {
-    taskIndex.set(targetTask);
-    modalDisplayController(iconID);
-    getTaskData(targetTask);
+    selectedTask.set(elementName);
+    getTaskData(elementName);
   } else if (iconID === "info") {
-    modalDisplayController(iconID);
-    getTaskDescription(targetTask);
+    getTaskDescription(iconID, elementName);
   } else if (iconID === "delete") {
-    deleteTask(targetTask, targetNode);
+    deleteTask(listElement, elementName);
   }
 }
 
-const taskIndex = new getTargetTask();
+const selectedTask = new getTargetTask();
 
 function getTargetTask() {
   var task;
@@ -77,18 +80,9 @@ function getTargetTask() {
   };
 }
 
-function deleteTask(taskIndex, targetNode) {
-  if (targetNode) targetNode.remove();
-  removeTask(taskIndex);
-}
-
-function getClickedTask(taskName) {
-  return getTodoList().findIndex((task) => task.name === taskName);
-}
-
-function getTaskDescription(clickedTask) {
-  const info = document.querySelector(".info");
-  info.textContent = getTodoList()[clickedTask].description;
+function deleteTask(listElement, elementName) {
+  if (listElement) listElement.remove();
+  removeTask(elementName);
 }
 
 function checkWeek(project) {
@@ -101,9 +95,8 @@ function checkWeek(project) {
 export {
   filterTodo,
   handleTaskIcons,
-  getClickedTask,
   deleteTask,
-  taskIndex,
+  selectedTask,
   TodoList,
   checkWeek,
 };

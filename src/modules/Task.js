@@ -5,7 +5,7 @@ export default class Task {
     this.dueDate = dueDate;
     this.priority = priority;
   }
-  
+
   formatDate() {
     const modifyDate = this.dueDate.replaceAll("-", "/");
     return modifyDate.split("/").reverse().join("/");
@@ -14,5 +14,16 @@ export default class Task {
   clearFormattedDate() {
     const modifyDate = this.dueDate.replaceAll("/", "-");
     return modifyDate.split("-").reverse().join("-");
+  }
+
+  getDescription() {
+    return this.description;
+  }
+
+  setData(task) {
+    this.name = task.name;
+    this.description = task.description;
+    this.dueDate = task.dueDate;
+    this.priority = task.priority;
   }
 }

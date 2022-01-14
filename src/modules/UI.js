@@ -3,22 +3,18 @@ import Project from "./Project";
 import {
   getTodoList,
   addTask,
-  editTodo,
   addProject,
-  addTaskToProject,
+  findTaskDescription,
+  findTaskData,
+  editTaskData,
 } from "./Storage";
-import {
-  filterTodo,
-  handleTaskIcons,
-  deleteTask,
-  getClickedTask,
-  taskIndex,
-} from "./Todo";
+import { filterTodo, handleTaskIcons } from "./Todo";
 
 function loadPage() {
   initSidebar();
   initModal();
   loadTasks();
+  loadProjects();
 }
 
 function loadTasks() {
@@ -26,6 +22,20 @@ function loadTasks() {
     .getProject("Inbox")
     .projects.forEach((task) => {
       displayTask(task);
+    });
+}
+
+function loadProjects() {
+  getTodoList()
+    .getProjects()
+    .forEach((project) => {
+      if (
+        project.name === "Inbox" ||
+        project.name === "Today" ||
+        project.name === "Week"
+      )
+        return;
+      displayProject(project);
     });
 }
 
@@ -75,13 +85,12 @@ function projectPopupHandler(e) {
   if (e.target.classList.contains("add")) createProject();
 }
 
-function modalEventsHandler(targetText) {
-  if (targetText === "Add Task") {
+function modalEventsHandler(buttonText) {
+  if (buttonText === "Add Task") {
     createTask();
   } else {
     const updateTask = true;
-    const newTask = createTask(updateTask);
-    editTask(newTask);
+    createTask(updateTask);
   }
 }
 
@@ -134,17 +143,15 @@ function createTask(updateTask) {
   const newTask = new Task(name, desc, date, priority);
   newTask.dueDate = newTask.formatDate();
 
-  addTask(filter, newTask);
-
-  if (filter != "Inbox" && filter !== "Today" && filter !== "Week") {
-    addTaskToProject(newTask, filter);
+  if (updateTask) {
+    editTaskData(newTask);
+    filterTodo(filter);
+    return;
   }
 
-  if (updateTask) return newTask;
-
+  addTask(filter, newTask);
   displayTask(newTask);
   filterTodo(filter);
-  return;
   resetModal();
 }
 
@@ -157,9 +164,9 @@ function displayTask(task) {
   listElement.classList.add("todo-item");
   listElement.addEventListener("click", (e) => {
     const id = e.target.id;
-    const targetNode = e.target.parentNode.parentNode;
-    const taskName = getClickedTask(listElement.childNodes[0].textContent);
-    handleTaskIcons(id, targetNode, taskName);
+    const element = e.target.parentNode.parentNode;
+    const elementName = listElement.childNodes[0].textContent;
+    handleTaskIcons(id, element, elementName);
   });
 
   const leftPanel = document.createElement("div");
@@ -179,34 +186,22 @@ function displayTask(task) {
   todoSection.appendChild(todoList);
 }
 
-function getTaskData(clickedTask) {
+function getTaskData(elementName, id) {
   const modalFields = document.querySelectorAll(".modal-field");
+  const taskData = findTaskData(elementName);
 
   for (let i = 0; i < modalFields.length; i++) {
     const modalFieldId = modalFields[i].id;
 
     if (i === 2) {
-      modalFields[i].value = getTodoList()[clickedTask].clearFormattedDate();
+      modalFields[i].value = taskData.clearFormattedDate();
       continue;
     }
 
-    modalFields[i].value = getTodoList()[clickedTask][modalFieldId];
+    modalFields[i].value = taskData[modalFieldId];
   }
-}
 
-function editTask(newTask) {
-  const index = taskIndex.get();
-  const taskName = document.querySelectorAll(".task-name");
-  const dateText = document.querySelectorAll(".date-text");
-  const priorityText = document.querySelectorAll(".priority-text");
-
-  taskName[index].textContent = newTask.name;
-  dateText[index].textContent = newTask.dueDate;
-  priorityText[index].textContent = newTask.priority;
-
-  editTodo(newTask, index);
-  deleteTask(getTodoList().length - 1);
-  resetModal();
+  modalDisplayController(id);
 }
 
 function createProject() {
@@ -215,17 +210,18 @@ function createProject() {
   const newProject = new Project(projectName);
 
   addProject(newProject);
-  displayProject();
+  displayProject(newProject);
+  filterTodo(projectName);
 }
 
-function displayProject() {
+function displayProject(project) {
   const projects = document.querySelector(".projects");
   const projectInput = document.querySelector(".project-input");
 
   const projectButton = document.createElement("button");
   projectButton.classList.add("new-project-button");
-  projectButton.textContent = projectInput.value;
-  projectButton.id = projectInput.value;
+  projectButton.textContent = project.name;
+  projectButton.id = project.name;
   projectInput.value = "";
 
   projectButton.addEventListener("click", (e) => {
@@ -239,4 +235,16 @@ function displayProject() {
   );
 }
 
-export { loadPage, modalDisplayController, getTaskData, displayTask };
+function getTaskDescription(id, elementName) {
+  const info = document.querySelector(".info");
+  info.textContent = findTaskDescription(elementName);
+  modalDisplayController(id);
+}
+
+export {
+  loadPage,
+  modalDisplayController,
+  getTaskData,
+  displayTask,
+  getTaskDescription,
+};

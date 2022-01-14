@@ -15,4 +15,12 @@ export default class Project {
   addTask(newTask) {
     this.projects.push(newTask);
   }
+
+  findTask(name) {
+    return this.projects.find((task) => task.name === name);
+  }
+
+  findTaskIndex(name) {
+    return this.projects.findIndex((task) => task.name === name);
+  }
 }

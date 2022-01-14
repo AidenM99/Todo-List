@@ -1,13 +1,9 @@
 import Task from "./Task";
 import Project from "./Project";
-import { TodoList, checkWeek } from "./Todo";
+import { TodoList, checkWeek, selectedTask } from "./Todo";
 
-function savetodoList(todoList) {
+function saveTodoList(todoList) {
   localStorage.setItem("todoList", JSON.stringify(todoList));
-}
-
-function saveProjects(projects) {
-  localStorage.setItem("projects", JSON.stringify(projects));
 }
 
 function getTodoList() {
@@ -31,35 +27,49 @@ function getTodoList() {
   return todoList;
 }
 
+function addProject(newProject) {
+  const todoList = getTodoList();
+  todoList.addProject(newProject);
+  saveTodoList(todoList);
+}
+
 function addTask(projectName, newTask) {
   const todoList = getTodoList();
-  if (projectName === "Today" || projectName === "Week") projectName = "Inbox";
+  if (projectName !== "Inbox") {
+    todoList.getProject("Inbox").addTask(newTask);
+  }
   todoList.getProject(projectName).addTask(newTask);
-  savetodoList(todoList);
+  saveTodoList(todoList);
 }
 
-function removeTask(taskIndex) {
+function removeTask(elementName) {
+  let todoList = getTodoList();
+  todoList.getProjects().forEach((project) => {
+    project.setTasks(
+      project.getTasks().filter((task) => task.name != elementName)
+    );
+  });
+  saveTodoList(todoList);
+}
+
+function findTaskDescription(elementName) {
   const todoList = getTodoList();
-  todoList.splice(taskIndex, 1);
-  savetodoList(todoList);
+  return todoList.getProject("Inbox").findTask(elementName).getDescription();
 }
 
-function editTodo(newTask, currentTask) {
+function findTaskData(elementName) {
   const todoList = getTodoList();
-  todoList[currentTask] = newTask;
-  savetodoList(todoList);
+  return todoList.getProject("Inbox").findTask(elementName);
 }
 
-function addProject(newProject) {
-  const projects = getProjects();
-  projects.push(newProject);
-  saveProjects(projects);
-}
-
-function addTaskToProject(newTask, projectName) {
-  const projects = getProjects();
-  const project = projects.find((project) => project.name === projectName);
-  project.projects.push(newTask);
+function editTaskData(task) {
+  const todoList = getTodoList();
+  todoList.getProjects().forEach((project) => {
+    if (project.findTask(selectedTask.get())) {
+      project.findTask(selectedTask.get()).setData(task);
+    }
+  });
+  saveTodoList(todoList);
 }
 
 function updateTodayProjects(today) {
@@ -69,7 +79,7 @@ function updateTodayProjects(today) {
     .getTasks()
     .filter((project) => project.dueDate === today);
   todoList.getProject("Today").projects = filterToday.slice(0);
-  savetodoList(todoList);
+  saveTodoList(todoList);
   return filterToday;
 }
 
@@ -80,18 +90,19 @@ function updateWeekProjects() {
     .getTasks()
     .filter((project) => checkWeek(project));
   todoList.getProject("Week").projects = filterWeek.slice(0);
-  savetodoList(todoList);
+  saveTodoList(todoList);
   return filterWeek;
 }
 
 export {
   getTodoList,
-  savetodoList,
+  saveTodoList,
   addTask,
   removeTask,
-  editTodo,
   addProject,
-  addTaskToProject,
   updateTodayProjects,
   updateWeekProjects,
+  findTaskDescription,
+  findTaskData,
+  editTaskData,
 };
