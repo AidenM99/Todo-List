@@ -52,14 +52,14 @@ function removeTask(elementName) {
   saveTodoList(todoList);
 }
 
-function findTaskDescription(elementName) {
+function findTaskDescription(projectName, elementName) {
   const todoList = getTodoList();
-  return todoList.getProject("Inbox").findTask(elementName).getDescription();
+  return todoList.getProject(projectName).findTask(elementName).getDescription();
 }
 
-function findTaskData(elementName) {
+function findTaskData(projectName, elementName) {
   const todoList = getTodoList();
-  return todoList.getProject("Inbox").findTask(elementName);
+  return todoList.getProject(projectName).findTask(elementName);
 }
 
 function editTaskData(task) {
@@ -72,26 +72,28 @@ function editTaskData(task) {
   saveTodoList(todoList);
 }
 
-function updateTodayProjects(today) {
+function updateTodayProjects(projectName, today) {
   const todoList = getTodoList();
-  const filterToday = todoList
-    .getProject("Inbox")
-    .getTasks()
-    .filter((project) => project.dueDate === today);
-  todoList.getProject("Today").projects = filterToday.slice(0);
+  todoList.getProject("Today").setTasks(
+    todoList
+      .getProject(projectName)
+      .getTasks()
+      .filter((project) => project.dueDate === today)
+  );
   saveTodoList(todoList);
-  return filterToday;
+  return todoList;
 }
 
-function updateWeekProjects() {
+function updateWeekProjects(projectName) {
   const todoList = getTodoList();
-  const filterWeek = todoList
-    .getProject("Inbox")
-    .getTasks()
-    .filter((project) => checkWeek(project));
-  todoList.getProject("Week").projects = filterWeek.slice(0);
+  todoList.getProject("Week").setTasks(
+    todoList
+      .getProject(projectName)
+      .getTasks()
+      .filter((project) => checkWeek(project))
+  );
   saveTodoList(todoList);
-  return filterWeek;
+  return todoList;
 }
 
 export {

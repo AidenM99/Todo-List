@@ -38,8 +38,8 @@ function filterTodo(id) {
   const today = format(new Date(), "dd/MM/yyyy");
   const todoElement = document.querySelectorAll(".todo-item");
 
-  updateWeekProjects();
-  updateTodayProjects(today);
+  updateWeekProjects("Inbox");
+  updateTodayProjects("Inbox", today);
   removeElements(todoElement);
 
   getTodoList()

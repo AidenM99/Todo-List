@@ -188,7 +188,7 @@ function displayTask(task) {
 
 function getTaskData(elementName, id) {
   const modalFields = document.querySelectorAll(".modal-field");
-  const taskData = findTaskData(elementName);
+  const taskData = findTaskData("Inbox", elementName);
 
   for (let i = 0; i < modalFields.length; i++) {
     const modalFieldId = modalFields[i].id;
@@ -237,7 +237,7 @@ function displayProject(project) {
 
 function getTaskDescription(id, elementName) {
   const info = document.querySelector(".info");
-  info.textContent = findTaskDescription(elementName);
+  info.textContent = findTaskDescription("Inbox", elementName);
   modalDisplayController(id);
 }
 
