@@ -1,6 +1,7 @@
 import Task from "./Task";
+import TodoList from "./Todo";
 import Project from "./Project";
-import { TodoList, checkWeek, selectedTask } from "./Todo";
+import { checkWeek, selectedTask } from "./app";
 
 function saveTodoList(todoList) {
   localStorage.setItem("todoList", JSON.stringify(todoList));
@@ -54,7 +55,10 @@ function removeTask(elementName) {
 
 function findTaskDescription(projectName, elementName) {
   const todoList = getTodoList();
-  return todoList.getProject(projectName).findTask(elementName).getDescription();
+  return todoList
+    .getProject(projectName)
+    .findTask(elementName)
+    .getDescription();
 }
 
 function findTaskData(projectName, elementName) {

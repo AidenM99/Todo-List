@@ -8,7 +8,7 @@ import {
   findTaskData,
   editTaskData,
 } from "./Storage";
-import { filterTodo, handleTaskIcons } from "./Todo";
+import { filterTodo, handleTaskIcons } from "./app";
 
 function loadPage() {
   initSidebar();
