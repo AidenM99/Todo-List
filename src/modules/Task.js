@@ -1,9 +1,10 @@
 export default class Task {
-  constructor(name, description, dueDate, priority) {
+  constructor(name, description, dueDate, priority, isComplete) {
     this.name = name;
     this.description = description;
     this.dueDate = dueDate;
     this.priority = priority;
+    this.isComplete = isComplete;
   }
 
   formatDate() {
@@ -18,6 +19,16 @@ export default class Task {
 
   getDescription() {
     return this.description;
+  }
+
+  getIsComplete() {
+    return this.isComplete;
+  }
+
+  setComplete() {
+    this.isComplete === false
+      ? (this.isComplete = true)
+      : (this.isComplete = false);
   }
 
   setData(task) {

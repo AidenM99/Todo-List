@@ -7,6 +7,7 @@ import {
   findTaskDescription,
   findTaskData,
   editTaskData,
+  checkComplete,
 } from "./Storage";
 import { filterTodo, handleTaskIcons } from "./app";
 
@@ -134,13 +135,14 @@ function createTask(updateTask) {
   const desc = document.getElementById("description").value;
   const date = document.getElementById("due-date").value;
   const priority = document.getElementById("priority").value;
+  const isComplete = false;
   const filter = document.querySelector(".sub-heading").textContent;
 
   if (!name || !desc || !date) {
     return alert("All fields must be filled");
   }
 
-  const newTask = new Task(name, desc, date, priority);
+  const newTask = new Task(name, desc, date, priority, isComplete);
   newTask.dueDate = newTask.formatDate();
 
   if (updateTask) {
@@ -165,8 +167,9 @@ function displayTask(task) {
   listElement.addEventListener("click", (e) => {
     const id = e.target.id;
     const element = e.target.parentNode.parentNode;
+    const circleIcon = listElement.childNodes[0].firstChild;
     const elementName = listElement.childNodes[0].textContent;
-    handleTaskIcons(id, element, elementName);
+    handleTaskIcons(id, element, circleIcon, elementName);
   });
 
   const leftPanel = document.createElement("div");
@@ -184,6 +187,11 @@ function displayTask(task) {
   listElement.appendChild(rightPanel);
   todoList.appendChild(listElement);
   todoSection.appendChild(todoList);
+
+  isComplete(
+    listElement.childNodes[0].firstChild,
+    listElement.childNodes[0].textContent
+  );
 }
 
 function getTaskData(elementName, id) {
@@ -235,6 +243,21 @@ function displayProject(project) {
   );
 }
 
+function isComplete(circleIcon, elementName) {
+  if (checkComplete("Inbox", elementName)) {
+    circleIcon.removeAttribute("class");
+    circleIcon.classList.add("fas", "fa-check-circle");
+    circleIcon.nextSibling.style.setProperty("text-decoration", "line-through");
+  } else {
+    circleIcon.removeAttribute("class");
+    circleIcon.classList.add("far", "fa-circle");
+    circleIcon.nextSibling.style.removeProperty(
+      "text-decoration",
+      "line-through"
+    );
+  }
+}
+
 function getTaskDescription(id, elementName) {
   const info = document.querySelector(".info");
   info.textContent = findTaskDescription("Inbox", elementName);
@@ -247,4 +270,5 @@ export {
   getTaskData,
   displayTask,
   getTaskDescription,
+  isComplete,
 };

@@ -76,6 +76,21 @@ function editTaskData(task) {
   saveTodoList(todoList);
 }
 
+function setComplete(elementName) {
+  const todoList = getTodoList();
+  todoList.getProjects().forEach((project) => {
+    if (project.findTask(elementName)) {
+      project.findTask(elementName).setComplete();
+    }
+  });
+  saveTodoList(todoList);
+}
+
+function checkComplete(projectName, elementName) {
+  const todoList = getTodoList();
+  return todoList.getProject(projectName).findTask(elementName).getIsComplete();
+}
+
 function updateTodayProjects(projectName, today) {
   const todoList = getTodoList();
   todoList.getProject("Today").setTasks(
@@ -111,4 +126,6 @@ export {
   findTaskDescription,
   findTaskData,
   editTaskData,
+  setComplete,
+  checkComplete,
 };

@@ -1,10 +1,11 @@
 import { format, isThisWeek } from "date-fns";
-import { getTaskData, displayTask, getTaskDescription } from "./UI";
+import { getTaskData, displayTask, getTaskDescription, isComplete } from "./UI";
 import {
   getTodoList,
   removeTask,
   updateTodayProjects,
   updateWeekProjects,
+  setComplete,
 } from "./Storage";
 
 function filterTodo(id) {
@@ -29,7 +30,7 @@ function removeElements(todo) {
   }
 }
 
-function handleTaskIcons(iconID, listElement, elementName) {
+function handleTaskIcons(iconID, listElement, circleIcon, elementName) {
   if (iconID === "edit") {
     selectedTask.set(elementName);
     getTaskData(elementName);
@@ -37,6 +38,9 @@ function handleTaskIcons(iconID, listElement, elementName) {
     getTaskDescription(iconID, elementName);
   } else if (iconID === "delete") {
     deleteTask(listElement, elementName);
+  } else {
+    setComplete(elementName);
+    isComplete(circleIcon, elementName);
   }
 }
 
