@@ -66,6 +66,16 @@ header {
   cursor: pointer;
 }
 
+.new-project-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.new-project-button:hover .hide {
+  display: block;
+}
+
 .icon {
   margin-right: 5px;
 }
