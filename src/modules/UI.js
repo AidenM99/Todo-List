@@ -229,12 +229,12 @@ function displayProject(project) {
 
   const projectButton = document.createElement("button");
   projectButton.classList.add("new-project-button");
-  projectButton.textContent = project.name;
   projectButton.id = project.name;
   projectInput.value = "";
 
   const leftProjectPanel = document.createElement("div");
   leftProjectPanel.classList.add("left-panel");
+  leftProjectPanel.innerHTML = `<span>${project.name}</span>`;
 
   const rightProjectPanel = document.createElement("div");
   rightProjectPanel.classList.add("right-panel");
@@ -247,8 +247,8 @@ function displayProject(project) {
   });
 
   projectButton.addEventListener("click", (e) => {
-    changeSubHeading(e.target.id);
-    filterTodo(e.target.id);
+    changeSubHeading(e.target.closest("button").id);
+    filterTodo(e.target.closest("button").id);
   });
 
   projectButton.appendChild(leftProjectPanel);
