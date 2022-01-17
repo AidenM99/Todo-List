@@ -232,11 +232,24 @@ function displayProject(project) {
   projectButton.id = project.name;
   projectInput.value = "";
 
+  const leftProjectPanel = document.createElement("div");
+  leftProjectPanel.classList.add("left-panel");
+
+  const rightProjectPanel = document.createElement("div");
+  rightProjectPanel.classList.add("right-panel");
+  rightProjectPanel.innerHTML = `<i class="fas fa-times delete-project hide"></i>`;
+
+  rightProjectPanel.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+
   projectButton.addEventListener("click", (e) => {
     changeSubHeading(e.target.id);
     filterTodo(e.target.id);
   });
 
+  projectButton.appendChild(leftProjectPanel);
+  projectButton.appendChild(rightProjectPanel);
   projects.insertBefore(
     projectButton,
     projects.childNodes[projects.childNodes.length - 4]

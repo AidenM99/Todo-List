@@ -53,6 +53,16 @@ function removeTask(elementName) {
   saveTodoList(todoList);
 }
 
+function removeProject(projectName) {
+  let todoList = getTodoList();
+  todoList.getProjects().forEach((project) => {
+    project.setTasks(
+      project.getTasks().filter((task) => task.name != elementName)
+    );
+  });
+  saveTodoList(todoList);
+}
+
 function findTaskDescription(projectName, elementName) {
   const todoList = getTodoList();
   return todoList
@@ -128,4 +138,5 @@ export {
   editTaskData,
   setComplete,
   checkComplete,
+  removeProject,
 };
