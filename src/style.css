@@ -76,6 +76,11 @@ header {
   display: block;
 }
 
+.delete-project:hover {
+  transition: 100ms;
+  transform: scale(1.2);
+}
+
 .icon {
   margin-right: 5px;
 }
