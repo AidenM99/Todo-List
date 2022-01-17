@@ -23,4 +23,11 @@ export default class TodoList {
   addProject(newProject) {
     this.projects.push(newProject);
   }
+
+  deleteProject(projectName) {
+    const projectIndex = this.projects.findIndex(
+      (project) => project.name === projectName
+    );
+    this.projects.splice(projectIndex, 1);
+  }
 }

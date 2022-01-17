@@ -8,6 +8,7 @@ import {
   findTaskData,
   editTaskData,
   checkComplete,
+  removeProject,
 } from "./Storage";
 import { filterTodo, handleTaskIcons } from "./app";
 
@@ -240,6 +241,8 @@ function displayProject(project) {
   rightProjectPanel.innerHTML = `<i class="fas fa-times delete-project hide"></i>`;
 
   rightProjectPanel.addEventListener("click", (e) => {
+    const projectButton = e.target.parentNode.parentNode;
+    deleteProject(projectButton);
     e.stopPropagation();
   });
 
@@ -254,6 +257,13 @@ function displayProject(project) {
     projectButton,
     projects.childNodes[projects.childNodes.length - 4]
   );
+}
+
+function deleteProject(projectButton) {
+  const inbox = document.getElementById("Inbox");
+  projectButton.remove();
+  removeProject(projectButton.id);
+  inbox.click();
 }
 
 function isComplete(circleIcon, elementName) {

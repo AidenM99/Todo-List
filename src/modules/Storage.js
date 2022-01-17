@@ -44,7 +44,7 @@ function addTask(projectName, newTask) {
 }
 
 function removeTask(elementName) {
-  let todoList = getTodoList();
+  const todoList = getTodoList();
   todoList.getProjects().forEach((project) => {
     project.setTasks(
       project.getTasks().filter((task) => task.name != elementName)
@@ -54,12 +54,20 @@ function removeTask(elementName) {
 }
 
 function removeProject(projectName) {
-  let todoList = getTodoList();
-  todoList.getProjects().forEach((project) => {
-    project.setTasks(
-      project.getTasks().filter((task) => task.name != elementName)
-    );
-  });
+  const todoList = getTodoList();
+  todoList.getProject("Inbox").setTasks(
+    todoList
+      .getProject("Inbox")
+      .getTasks()
+      .filter(
+        (task) =>
+          !todoList
+            .getProject(projectName)
+            .getTasks()
+            .some((task2) => task.name === task2.name)
+      )
+  );
+  todoList.deleteProject(projectName);
   saveTodoList(todoList);
 }
 
