@@ -11,21 +11,22 @@
     <title>Todo List</title>
   </head>
   <body>
-    <header>
+    <header class="header">
       <h1 class="main-heading">Todo List</h1>
+      <button class="open-nav"><i class="fas fa-bars"></i></button>
     </header>
     <main>
       <div id="content">
         <!-----Todo Sidebar----->
-        <div class="sidebar">
+        <nav class="nav">
           <div class="filter">
-            <button id="Inbox" class="sidebar-item">
+            <button id="Inbox" class="nav-filter">
               <i class="fas fa-inbox icon"></i>Inbox
             </button>
-            <button id="Today" class="sidebar-item">
+            <button id="Today" class="nav-filter">
               <i class="far fa-calendar-times icon"></i>Today
             </button>
-            <button id="Week" class="sidebar-item">
+            <button id="Week" class="nav-filter">
               <i class="far fa-calendar-alt icon"></i>Week
             </button>
           </div>
@@ -44,7 +45,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </nav>
 
         <!-----Todo Main----->
         <div class="todo-main">
@@ -94,9 +95,9 @@
         </div>
 
         <!-----Info Modal----->
-        <div id="info-modal" class="modal-bg">
+        <div id="info-modal" class= "modal-bg">
           <div class="modal-content">
-            <h1 class="modal-heading description">Description</h1>
+            <h1 class="modal-heading description">Details</h1>
             <p class="info"></p>
           </div>
         </div>
