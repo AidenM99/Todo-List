@@ -19,18 +19,29 @@ body {
 }
 
 /*****Header*****/
-header {
+.header {
   color: #ffffff;
   background-color: var(--color-orange);
   padding: 15px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.open-nav {
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-size: 20px;
+  cursor: pointer;
 }
 
 .main-heading {
   margin: 0;
 }
 
-/*****Sidebar*****/
-.sidebar {
+/*****Nav*****/
+.nav {
   max-width: 250px;
   min-width: 250px;
   background-color: var(--color-grey);
@@ -39,14 +50,14 @@ header {
   padding: 10px 30px;
 }
 
-.sidebar-item {
+.nav-filter {
   display: block;
   width: 100%;
   text-align: left;
   margin: 10px 0;
 }
 
-.sidebar-item,
+.nav-filter,
 .project-button,
 .new-project-button {
   padding: 5px 10px;
@@ -60,7 +71,7 @@ header {
   text-align: left;
 }
 
-.sidebar-item:hover,
+.nav-filter:hover,
 .project-button:hover,
 .new-project-button:hover {
   background-color: var(--color-darker-grey);
@@ -119,9 +130,9 @@ header {
 
 /*****Todo Main Section*****/
 .todo-main {
-  width: 100%;
-  padding: 3% 10%;
-  position: relative;
+  width: 1100px;
+  padding: 50px;
+  margin: 0 auto;
 }
 
 .sub-heading {
@@ -291,4 +302,10 @@ button {
   transition: all 0.2s;
   cursor: pointer;
   background-color: var(--color-orange);
+}
+
+@media (max-width: 990px) {
+  .nav {
+    display: none;
+  }
 }

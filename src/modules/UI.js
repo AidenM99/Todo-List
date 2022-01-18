@@ -13,7 +13,7 @@ import {
 import { filterTodo, handleTaskIcons } from "./app";
 
 function loadPage() {
-  initSidebar();
+  initNav();
   initModal();
   loadTasks();
   loadProjects();
@@ -41,10 +41,10 @@ function loadProjects() {
     });
 }
 
-function initSidebar() {
-  const sidebar = document.querySelector(".sidebar");
-  sidebar.addEventListener("click", (e) => {
-    if (e.target.classList.contains("sidebar-item")) {
+function initNav() {
+  const nav = document.querySelector(".nav");
+  nav.addEventListener("click", (e) => {
+    if (e.target.classList.contains("nav-filter")) {
       changeSubHeading(e.target.id);
       filterTodo(e.target.id);
     } else if (e.target.classList.contains("project-button")) {
