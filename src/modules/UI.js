@@ -172,7 +172,7 @@ function editTask(newTask, filter) {
   filterTodo(filter);
 }
 
-function displayTask(task, filter) {
+function displayTask(task) {
   const todoSection = document.querySelector(".todo-main");
 
   const todoList = document.querySelector(".todo-list");
@@ -308,7 +308,7 @@ function displayProject(project) {
   rightProjectPanel.innerHTML = `<i class="fas fa-times delete-project hide"></i>`;
 
   rightProjectPanel.addEventListener("click", (e) => {
-    const projectButton = e.target.parentNode.parentNode;
+    const projectButton = e.target.closest("button")
     deleteProject(projectButton);
     e.stopPropagation();
   });
