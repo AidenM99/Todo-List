@@ -4,7 +4,6 @@ import {
   getTodoList,
   addTask,
   addProject,
-  findTaskDescription,
   findTaskData,
   editTaskData,
   checkComplete,
@@ -149,6 +148,7 @@ function createTask(updateTask) {
   if (updateTask) {
     editTaskData(newTask);
     filterTodo(filter);
+    modalDisplayController();
     return;
   }
 
@@ -179,9 +179,10 @@ function displayTask(task) {
 
   const rightPanel = document.createElement("div");
   rightPanel.classList.add("right-panel");
-  rightPanel.innerHTML = `<p class="date-text">${task.dueDate}</p>
-  <p class="priority-text">${task.priority}</p>
-  <i class="fas fa-edit todo-icon" id="edit"></i><i class="fas fa-info todo-icon" id="info"></i><i class="fas fa-trash todo-icon" id="delete"></i>
+  rightPanel.innerHTML = `
+  <button id="info" class="task-details-button">Details</button>
+  <i class="fas fa-edit todo-icon" id="edit"></i>
+  <i class="fas fa-trash todo-icon" id="delete"></i>
   `;
 
   listElement.appendChild(leftPanel);
@@ -281,10 +282,35 @@ function isComplete(circleIcon, elementName) {
   }
 }
 
-function getTaskDescription(id, elementName) {
-  const info = document.querySelector(".info");
-  info.textContent = findTaskDescription("Inbox", elementName);
+function getTaskDetails(id, elementName) {
+  const taskDetails = document.querySelector(".task-details");
+  taskDetails.innerHTML = `
+  <p class="task-name-data"><span class="task-prop">Name:</span> ${
+    findTaskData("Inbox", elementName).name
+  }</p>
+  <p class="task-description"><span class="task-prop">Details:</span> ${
+    findTaskData("Inbox", elementName).description
+  }</p>
+  <p class="task-priority"><span class="task-prop">Priority:</span> ${
+    findTaskData("Inbox", elementName).priority
+  }</p>
+  <p class="task-date"><span class="task-prop">Due Date:</span> ${
+    findTaskData("Inbox", elementName).dueDate
+  }</p>
+  `;
   modalDisplayController(id);
+}
+
+const openNavButton = document.querySelector(".open-nav");
+
+openNavButton.addEventListener("click", () => {
+  toggleNav();
+});
+
+function toggleNav() {
+  const nav = document.querySelector(".nav");
+
+  nav.classList.toggle("show");
 }
 
 export {
@@ -292,6 +318,6 @@ export {
   modalDisplayController,
   getTaskData,
   displayTask,
-  getTaskDescription,
+  getTaskDetails,
   isComplete,
 };

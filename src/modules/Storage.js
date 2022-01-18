@@ -71,14 +71,6 @@ function removeProject(projectName) {
   saveTodoList(todoList);
 }
 
-function findTaskDescription(projectName, elementName) {
-  const todoList = getTodoList();
-  return todoList
-    .getProject(projectName)
-    .findTask(elementName)
-    .getDescription();
-}
-
 function findTaskData(projectName, elementName) {
   const todoList = getTodoList();
   return todoList.getProject(projectName).findTask(elementName);
@@ -141,7 +133,6 @@ export {
   addProject,
   updateTodayProjects,
   updateWeekProjects,
-  findTaskDescription,
   findTaskData,
   editTaskData,
   setComplete,

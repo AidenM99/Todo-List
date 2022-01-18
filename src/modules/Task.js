@@ -17,10 +17,6 @@ export default class Task {
     return modifyDate.split("-").reverse().join("-");
   }
 
-  getDescription() {
-    return this.description;
-  }
-
   getIsComplete() {
     return this.isComplete;
   }

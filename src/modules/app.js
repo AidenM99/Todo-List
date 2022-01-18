@@ -1,5 +1,5 @@
 import { format, isThisWeek } from "date-fns";
-import { getTaskData, displayTask, getTaskDescription, isComplete } from "./UI";
+import { getTaskData, displayTask, getTaskDetails, isComplete } from "./UI";
 import {
   getTodoList,
   removeTask,
@@ -35,7 +35,7 @@ function handleTaskIcons(iconID, listElement, circleIcon, elementName) {
     selectedTask.set(elementName);
     getTaskData(elementName);
   } else if (iconID === "info") {
-    getTaskDescription(iconID, elementName);
+    getTaskDetails(iconID, elementName);
   } else if (iconID === "delete") {
     deleteTask(listElement, elementName);
   } else {

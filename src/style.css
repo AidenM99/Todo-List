@@ -171,7 +171,11 @@ body {
 }
 
 .task-name {
-  margin: 0 0 0 10px;
+  margin: 5px 0 5px 10px;
+}
+
+.task-name-data {
+  margin: 0;
 }
 
 .date-text,
@@ -185,10 +189,6 @@ body {
 
 #edit:hover {
   color: green;
-}
-
-#info:hover {
-  color: var(--twitter-blue);
 }
 
 #delete:hover {
@@ -225,6 +225,17 @@ body {
   font-weight: bold;
   text-align: left;
   word-break: break-word;
+}
+
+.modal-content.details {
+  align-items: stretch;
+  padding: 30px 20px;
+}
+
+.task-description,
+.task-date,
+.task-priority {
+  margin: 2px 0;
 }
 
 .modal-heading {
@@ -265,10 +276,16 @@ input[type="date"],
   width: 262px;
 }
 
-.info {
+.task-details {
   color: #000000;
   margin: 0;
   font-weight: normal;
+}
+
+.task-prop {
+  font-weight: bold;
+  width: 85px;
+  float: left;
 }
 
 .description {
@@ -304,8 +321,30 @@ button {
   background-color: var(--color-orange);
 }
 
+.task-details-button {
+  margin: 0 5px 0 12.5px;
+  border-radius: 5px;
+}
+
 @media (max-width: 990px) {
+  #content {
+    display: block;
+    padding: 0 10px;
+  }
+
+  .todo-main {
+    width: 100%;
+    padding: 50px 0;
+  }
+
   .nav {
     display: none;
+    max-width: 100%;
+    min-height: fit-content;
+    margin: 0 -10px;
   }
+}
+
+.show {
+  display: block;
 }
