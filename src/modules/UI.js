@@ -2,6 +2,7 @@ import Project from "./Project";
 import Task from "./Task";
 import {
   checkComplete,
+  findProjectData,
   removeProject,
   findTaskData,
   editTaskData,
@@ -141,8 +142,8 @@ function createTask(updateTask) {
   const desc = document.getElementById("description").value;
   const date = document.getElementById("due-date").value;
   const priority = document.getElementById("priority").value;
-  const isComplete = false;
   const filter = document.querySelector(".sub-heading").textContent;
+  const isComplete = false;
 
   if (!name || !desc || !date) {
     return alert("All fields must be filled");
@@ -152,19 +153,26 @@ function createTask(updateTask) {
   newTask.dueDate = newTask.formatDate();
 
   if (updateTask) {
-    editTaskData(newTask);
-    filterTodo(filter);
-    modalDisplayController();
+    editTask(newTask, filter);
+    return;
+  } else if (findTaskData("Inbox", newTask.name)) {
+    alert("Task names must be different");
     return;
   }
 
   addTask(filter, newTask);
-  displayTask(newTask);
+  displayTask(newTask, filter);
   filterTodo(filter);
   resetModal();
 }
 
-function displayTask(task) {
+function editTask(newTask, filter) {
+  modalDisplayController();
+  editTaskData(newTask);
+  filterTodo(filter);
+}
+
+function displayTask(task, filter) {
   const todoSection = document.querySelector(".todo-main");
 
   const todoList = document.querySelector(".todo-list");
@@ -197,6 +205,7 @@ function displayTask(task) {
   listElement.appendChild(rightPanel);
   todoList.appendChild(listElement);
   todoSection.appendChild(todoList);
+
   isComplete(listElement.childNodes[0].firstChild, task.name);
 }
 
@@ -270,6 +279,8 @@ function createProject() {
 
   if (projectName.length > 40) {
     return alert("Project name cannot exceed 40 characters");
+  } else if (findProjectData(projectName)) {
+    return alert("Project names must be different");
   }
 
   const newProject = new Project(projectName);

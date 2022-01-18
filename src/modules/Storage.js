@@ -43,16 +43,6 @@ function addTask(projectName, newTask) {
   saveTodoList(todoList);
 }
 
-function removeTask(elementName) {
-  const todoList = getTodoList();
-  todoList.getProjects().forEach((project) => {
-    project.setTasks(
-      project.getTasks().filter((task) => task.name != elementName)
-    );
-  });
-  saveTodoList(todoList);
-}
-
 function removeProject(projectName) {
   const todoList = getTodoList();
   todoList.getProject("Inbox").setTasks(
@@ -71,9 +61,24 @@ function removeProject(projectName) {
   saveTodoList(todoList);
 }
 
+function removeTask(elementName) {
+  const todoList = getTodoList();
+  todoList.getProjects().forEach((project) => {
+    project.setTasks(
+      project.getTasks().filter((task) => task.name != elementName)
+    );
+  });
+  saveTodoList(todoList);
+}
+
 function findTaskData(projectName, elementName) {
   const todoList = getTodoList();
   return todoList.getProject(projectName).findTask(elementName);
+}
+
+function findProjectData(projectName) {
+  const todoList = getTodoList();
+  return todoList.getProject(projectName);
 }
 
 function editTaskData(task) {
@@ -128,6 +133,7 @@ function updateWeekProjects(projectName) {
 export {
   updateTodayProjects,
   updateWeekProjects,
+  findProjectData,
   checkComplete,
   removeProject,
   saveTodoList,
