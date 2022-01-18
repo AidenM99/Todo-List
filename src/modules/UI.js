@@ -50,6 +50,11 @@ function initNav() {
       projectPopupHandler(e);
     }
   });
+
+  const openNav = document.querySelector(".open-nav");
+  openNav.addEventListener("click", () => {
+    toggleNav();
+  });
 }
 
 function initModal() {
@@ -300,12 +305,6 @@ function getTaskDetails(id, elementName) {
   `;
   modalDisplayController(id);
 }
-
-const openNavButton = document.querySelector(".open-nav");
-
-openNavButton.addEventListener("click", () => {
-  toggleNav();
-});
 
 function toggleNav() {
   const nav = document.querySelector(".nav");
