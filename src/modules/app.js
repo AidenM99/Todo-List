@@ -20,6 +20,7 @@ import {
 } from "./Storage";
 
 function filterTodo(id) {
+   // Removes all todo elements and reconstructs them based on current filters
   const filter = id;
   const today = format(new Date(), "dd/MM/yyyy");
   const todoElement = document.querySelectorAll(".todo-item");
@@ -37,7 +38,7 @@ function filterTodo(id) {
 
 function handleTaskIcons(iconID, listElement, circleIcon, elementName) {
   if (iconID === "edit") {
-    selectedTask.set(elementName);
+    selectedTask.set(elementName); // Saves todo element name so it can be looked up later
     displayTaskData(elementName);
   } else if (iconID === "info") {
     getTaskDetails(iconID, elementName);
@@ -49,8 +50,9 @@ function handleTaskIcons(iconID, listElement, circleIcon, elementName) {
   }
 }
 
-function checkWeek(project) {
-  const week = isThisWeek(new Date(project.clearFormattedDate()), {
+function checkWeek(task) {
+  // Filter task by current week, clears date formatting so it can be parsed
+  const week = isThisWeek(new Date(task.clearFormattedDate()), {
     weekStartsOn: 1,
   });
   return week;
@@ -66,6 +68,7 @@ function navController(e) {
 }
 
 function modalCloseCheck(e) {
+  // Closes modal if modal content cannot be found when searching DOM tree
   if (!e.target.closest(".modal-content")) {
     modalDisplayController(e.target.id);
     if (e.target.id != "edit") {
@@ -78,12 +81,14 @@ function modalEventsHandler(buttonText) {
   if (buttonText === "Add Task") {
     createTask();
   } else {
+    // If updateTask, user is editing task and a new task will not be appended
     const updateTask = true;
     createTask(updateTask);
   }
 }
 
 function mqController(mq, filter) {
+  // Resets todo list when media query is met
   mq.onchange = (e) => {
     if (e.matches) {
       filterTodo(filter);
@@ -97,7 +102,7 @@ function checkMedia(string) {
   const mq = window.matchMedia("(max-width: 990px)");
 
   if (mq.matches && string.length > 25) {
-    // If media query matches
+    // If media query matches return shortened task name
     return (string = string.substring(0, 20) + "...");
   } else {
     return string;

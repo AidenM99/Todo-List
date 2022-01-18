@@ -107,7 +107,7 @@ function updateTodayProjects(projectName, today) {
     todoList
       .getProject(projectName)
       .getTasks()
-      .filter((project) => project.dueDate === today)
+      .filter((task) => task.dueDate === today)
   );
   saveTodoList(todoList);
   return todoList;
@@ -119,7 +119,7 @@ function updateWeekProjects(projectName) {
     todoList
       .getProject(projectName)
       .getTasks()
-      .filter((project) => checkWeek(project))
+      .filter((task) => checkWeek(task))
   );
   saveTodoList(todoList);
   return todoList;
