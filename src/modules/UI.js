@@ -308,8 +308,10 @@ function displayProject(project) {
   rightProjectPanel.innerHTML = `<i class="fas fa-times delete-project hide"></i>`;
 
   rightProjectPanel.addEventListener("click", (e) => {
-    const projectButton = e.target.closest("button")
-    deleteProject(projectButton);
+    if (e.target.classList.contains("delete-project")) {
+      const projectButton = e.target.closest("button");
+      deleteProject(projectButton);
+    }
     e.stopPropagation();
   });
 
