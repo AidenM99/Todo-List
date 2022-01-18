@@ -228,7 +228,6 @@ button {
   position: relative;
   background-color: #ffffff;
   color: var(--color-orange);
-  max-width: 384px;
   min-width: 384px;
   display: flex;
   justify-content: space-around;
@@ -342,6 +341,12 @@ input[type="date"],
 @media (max-width: 500px) {
   .modal-content {
     min-width: 300px;
+    margin-top: -75px;
+  }
+
+  .modal-content.details {
+    min-width: 300px;
+    padding: 40px 20px;
   }
 }
 
