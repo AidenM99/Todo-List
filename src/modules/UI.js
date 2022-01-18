@@ -14,6 +14,7 @@ import { filterTodo, handleTaskIcons } from "./app";
 function loadPage() {
   initNav();
   initModal();
+  initMedia();
   loadTasks();
   loadProjects();
 }
@@ -76,6 +77,18 @@ function initModal() {
       }
     }
   });
+}
+
+function initMedia() {
+  const mq = window.matchMedia("(max-width: 990px)");
+  mq.onchange = (e) => {
+    const filter = document.querySelector(".sub-heading").textContent;
+    if (e.matches) {
+      filterTodo(filter);
+    } else {
+      filterTodo(filter);
+    }
+  };
 }
 
 function changeSubHeading(id) {
@@ -174,13 +187,15 @@ function displayTask(task) {
     const id = e.target.id;
     const element = e.target.parentNode.parentNode;
     const circleIcon = listElement.childNodes[0].firstChild;
-    const elementName = listElement.childNodes[0].textContent;
+    const elementName = task.name;
     handleTaskIcons(id, element, circleIcon, elementName);
   });
 
   const leftPanel = document.createElement("div");
   leftPanel.classList.add("left-panel");
-  leftPanel.innerHTML = `<i class="far fa-circle"></i><p class="task-name">${task.name}</p>`;
+  leftPanel.innerHTML = `<i class="far fa-circle"></i><p class="task-name">${checkMedia(
+    task.name
+  )}</p>`;
 
   const rightPanel = document.createElement("div");
   rightPanel.classList.add("right-panel");
@@ -195,10 +210,18 @@ function displayTask(task) {
   todoList.appendChild(listElement);
   todoSection.appendChild(todoList);
 
-  isComplete(
-    listElement.childNodes[0].firstChild,
-    listElement.childNodes[0].textContent
-  );
+  isComplete(listElement.childNodes[0].firstChild, task.name);
+}
+
+function checkMedia(string) {
+  const mq = window.matchMedia("(max-width: 990px)");
+
+  if (mq.matches && string.length > 25) {
+    // If media query matches
+    return (string = string.substring(0, 20) + "...");
+  } else {
+    return string;
+  }
 }
 
 function getTaskData(elementName, id) {
@@ -221,6 +244,10 @@ function getTaskData(elementName, id) {
 
 function createProject() {
   const projectName = document.querySelector(".project-input").value;
+
+  if (projectName.length > 40) {
+    return alert("Project name cannot exceed 40 characters");
+  }
 
   const newProject = new Project(projectName);
 
