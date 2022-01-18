@@ -228,8 +228,8 @@ button {
   position: relative;
   background-color: #ffffff;
   color: var(--color-orange);
-  min-width: 384px;
   max-width: 384px;
+  min-width: 384px;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -313,6 +313,7 @@ input[type="date"],
 .task-details-button {
   margin: 0 5px 0 12.5px;
   border-radius: 5px;
+  background-color: var(--color-orange);
 }
 
 @media (max-width: 990px) {
@@ -335,6 +336,12 @@ input[type="date"],
 
   .open-nav {
     display: inline-block;
+  }
+}
+
+@media (max-width: 500px) {
+  .modal-content {
+    min-width: 300px;
   }
 }
 
