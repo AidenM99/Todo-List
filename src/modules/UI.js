@@ -269,9 +269,11 @@ function isComplete(circleIcon, elementName) {
 function projectPopupHandler(e) {
   const projectButton = document.querySelector(".project-button");
   const projectPopup = document.querySelector(".project-popup");
+  const projectInput = document.querySelector(".project-input");
   projectButton.classList.toggle("hide");
   projectPopup.classList.toggle("hide");
   if (e.target.classList.contains("add")) createProject();
+  if (e.target.classList.contains("cancel")) projectInput.value = "";
 }
 
 function createProject() {
