@@ -3,11 +3,11 @@
 
 ### Features
 
-- Save todo items to one of the default folders (Home, Today, Week) or create a custom project folder.
-- View toto details, include the name, description, priority and due date of the todo.
+- Save todo items to one of the default folders (Home, Today, Week) or create a custom project folder
+- View toto details, including the name, description, priority and due date of the todo
 - Three priority levels to assign a todo item
 - Dynamically add, edit or remove todos
+- All data saved to local storage
 - Fully responsive
-- All data saved to local storage 
 
 ![](./Todolist.png)
