@@ -1,15 +1,24 @@
-import Task from "./Task";
 import Project from "./Project";
+import Task from "./Task";
 import {
-  getTodoList,
-  addTask,
-  addProject,
-  findTaskData,
-  editTaskData,
   checkComplete,
   removeProject,
+  findTaskData,
+  editTaskData,
+  getTodoList,
+  removeTask,
+  addProject,
+  addTask,
 } from "./Storage";
-import { filterTodo, handleTaskIcons } from "./app";
+import {
+  modalEventsHandler,
+  modalCloseCheck,
+  handleTaskIcons,
+  navController,
+  mqController,
+  checkMedia,
+  filterTodo,
+} from "./app";
 
 function loadPage() {
   initNav();
@@ -17,6 +26,40 @@ function loadPage() {
   initMedia();
   loadTasks();
   loadProjects();
+}
+
+function initNav() {
+  const nav = document.querySelector(".nav");
+  nav.addEventListener("click", (e) => {
+    navController(e);
+  });
+
+  const openNav = document.querySelector(".open-nav");
+  openNav.addEventListener("click", () => {
+    toggleNav();
+  });
+}
+
+function initModal() {
+  const newTodo = document.getElementById("new-todo");
+  newTodo.addEventListener("click", (e) => {
+    modalDisplayController(e.target.id);
+  });
+
+  const modalButton = document.querySelector(".modal-button");
+  modalButton.addEventListener("click", (e) => {
+    modalEventsHandler(e.target.textContent);
+  });
+
+  document.addEventListener("click", (e) => {
+    modalCloseCheck(e);
+  });
+}
+
+function initMedia() {
+  const mq = window.matchMedia("(max-width: 990px)");
+  const filter = document.querySelector(".sub-heading").textContent;
+  mqController(mq, filter);
 }
 
 function loadTasks() {
@@ -41,76 +84,21 @@ function loadProjects() {
     });
 }
 
-function initNav() {
-  const nav = document.querySelector(".nav");
-  nav.addEventListener("click", (e) => {
-    if (e.target.classList.contains("nav-filter")) {
-      changeSubHeading(e.target.id);
-      filterTodo(e.target.id);
-    } else if (e.target.classList.contains("project-button")) {
-      projectPopupHandler(e);
-    }
-  });
-
-  const openNav = document.querySelector(".open-nav");
-  openNav.addEventListener("click", () => {
-    toggleNav();
-  });
-}
-
-function initModal() {
-  const newTodo = document.getElementById("new-todo");
-  newTodo.addEventListener("click", (e) => {
-    modalDisplayController(e.target.id);
-  });
-
-  const modalButton = document.querySelector(".modal-button");
-  modalButton.addEventListener("click", (e) => {
-    modalEventsHandler(e.target.textContent);
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest(".modal-content")) {
-      modalDisplayController(e.target.id);
-      if (e.target.id != "edit") {
-        resetModal();
-      }
-    }
-  });
-}
-
-function initMedia() {
-  const mq = window.matchMedia("(max-width: 990px)");
-  mq.onchange = (e) => {
-    const filter = document.querySelector(".sub-heading").textContent;
-    if (e.matches) {
-      filterTodo(filter);
-    } else {
-      filterTodo(filter);
-    }
-  };
-}
-
 function changeSubHeading(id) {
   const subHeading = document.querySelector(".sub-heading");
   subHeading.textContent = id;
 }
 
-function projectPopupHandler(e) {
-  const projectButton = document.querySelector(".project-button");
-  const projectPopup = document.querySelector(".project-popup");
-  projectButton.classList.toggle("hide");
-  projectPopup.classList.toggle("hide");
-  if (e.target.classList.contains("add")) createProject();
+function removeElements(todo) {
+  for (let i = 0; i < todo.length; i++) {
+    todo[i].parentNode.removeChild(todo[i]);
+  }
 }
 
-function modalEventsHandler(buttonText) {
-  if (buttonText === "Add Task") {
-    createTask();
-  } else {
-    const updateTask = true;
-    createTask(updateTask);
-  }
+function toggleNav() {
+  const nav = document.querySelector(".nav");
+
+  nav.classList.toggle("show");
 }
 
 function modalDisplayController(id) {
@@ -209,22 +197,29 @@ function displayTask(task) {
   listElement.appendChild(rightPanel);
   todoList.appendChild(listElement);
   todoSection.appendChild(todoList);
-
   isComplete(listElement.childNodes[0].firstChild, task.name);
 }
 
-function checkMedia(string) {
-  const mq = window.matchMedia("(max-width: 990px)");
-
-  if (mq.matches && string.length > 25) {
-    // If media query matches
-    return (string = string.substring(0, 20) + "...");
-  } else {
-    return string;
-  }
+function getTaskDetails(id, elementName) {
+  const taskDetails = document.querySelector(".task-details");
+  taskDetails.innerHTML = `
+  <span class="task-prop">Name:</span><p class="task-name-data">${
+    findTaskData("Inbox", elementName).name
+  }</p> 
+  <span class="task-prop">Details:</span><p class="task-description">${
+    findTaskData("Inbox", elementName).description
+  }</p> 
+  <span class="task-prop">Priority:</span><p class="task-priority">${
+    findTaskData("Inbox", elementName).priority
+  }</p> 
+  <span class="task-prop">Due Date:</span><p class="task-date">${
+    findTaskData("Inbox", elementName).dueDate
+  }</p> 
+  `;
+  modalDisplayController(id);
 }
 
-function getTaskData(elementName, id) {
+function displayTaskData(elementName, id) {
   const modalFields = document.querySelectorAll(".modal-field");
   const taskData = findTaskData("Inbox", elementName);
 
@@ -240,6 +235,34 @@ function getTaskData(elementName, id) {
   }
 
   modalDisplayController(id);
+}
+
+function deleteTask(listElement, elementName) {
+  if (listElement) listElement.remove();
+  removeTask(elementName);
+}
+
+function isComplete(circleIcon, elementName) {
+  if (checkComplete("Inbox", elementName)) {
+    circleIcon.removeAttribute("class");
+    circleIcon.classList.add("fas", "fa-check-circle");
+    circleIcon.nextSibling.style.setProperty("text-decoration", "line-through");
+  } else {
+    circleIcon.removeAttribute("class");
+    circleIcon.classList.add("far", "fa-circle");
+    circleIcon.nextSibling.style.removeProperty(
+      "text-decoration",
+      "line-through"
+    );
+  }
+}
+
+function projectPopupHandler(e) {
+  const projectButton = document.querySelector(".project-button");
+  const projectPopup = document.querySelector(".project-popup");
+  projectButton.classList.toggle("hide");
+  projectPopup.classList.toggle("hide");
+  if (e.target.classList.contains("add")) createProject();
 }
 
 function createProject() {
@@ -299,51 +322,18 @@ function deleteProject(projectButton) {
   inbox.click();
 }
 
-function isComplete(circleIcon, elementName) {
-  if (checkComplete("Inbox", elementName)) {
-    circleIcon.removeAttribute("class");
-    circleIcon.classList.add("fas", "fa-check-circle");
-    circleIcon.nextSibling.style.setProperty("text-decoration", "line-through");
-  } else {
-    circleIcon.removeAttribute("class");
-    circleIcon.classList.add("far", "fa-circle");
-    circleIcon.nextSibling.style.removeProperty(
-      "text-decoration",
-      "line-through"
-    );
-  }
-}
-
-function getTaskDetails(id, elementName) {
-  const taskDetails = document.querySelector(".task-details");
-  taskDetails.innerHTML = `
-  <p class="task-name-data"><span class="task-prop">Name:</span> ${
-    findTaskData("Inbox", elementName).name
-  }</p>
-  <p class="task-description"><span class="task-prop">Details:</span> ${
-    findTaskData("Inbox", elementName).description
-  }</p>
-  <p class="task-priority"><span class="task-prop">Priority:</span> ${
-    findTaskData("Inbox", elementName).priority
-  }</p>
-  <p class="task-date"><span class="task-prop">Due Date:</span> ${
-    findTaskData("Inbox", elementName).dueDate
-  }</p>
-  `;
-  modalDisplayController(id);
-}
-
-function toggleNav() {
-  const nav = document.querySelector(".nav");
-
-  nav.classList.toggle("show");
-}
-
 export {
-  loadPage,
   modalDisplayController,
-  getTaskData,
-  displayTask,
+  projectPopupHandler,
+  changeSubHeading,
+  removeElements,
+  displayTaskData,
   getTaskDetails,
   isComplete,
+  displayTask,
+  resetModal,
+  createTask,
+  deleteTask,
+  initMedia,
+  loadPage,
 };

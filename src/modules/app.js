@@ -1,11 +1,22 @@
-import { format, isThisWeek } from "date-fns";
-import { getTaskData, displayTask, getTaskDetails, isComplete } from "./UI";
+import { isThisWeek, format } from "date-fns";
 import {
-  getTodoList,
-  removeTask,
+  modalDisplayController,
+  projectPopupHandler,
+  changeSubHeading,
+  removeElements,
+  displayTaskData,
+  getTaskDetails,
+  displayTask,
+  isComplete,
+  resetModal,
+  createTask,
+  deleteTask,
+} from "./UI";
+import {
   updateTodayProjects,
   updateWeekProjects,
   setComplete,
+  getTodoList,
 } from "./Storage";
 
 function filterTodo(id) {
@@ -24,16 +35,10 @@ function filterTodo(id) {
     });
 }
 
-function removeElements(todo) {
-  for (let i = 0; i < todo.length; i++) {
-    todo[i].parentNode.removeChild(todo[i]);
-  }
-}
-
 function handleTaskIcons(iconID, listElement, circleIcon, elementName) {
   if (iconID === "edit") {
     selectedTask.set(elementName);
-    getTaskData(elementName);
+    displayTaskData(elementName);
   } else if (iconID === "info") {
     getTaskDetails(iconID, elementName);
   } else if (iconID === "delete") {
@@ -41,6 +46,61 @@ function handleTaskIcons(iconID, listElement, circleIcon, elementName) {
   } else {
     setComplete(elementName);
     isComplete(circleIcon, elementName);
+  }
+}
+
+function checkWeek(project) {
+  const week = isThisWeek(new Date(project.clearFormattedDate()), {
+    weekStartsOn: 1,
+  });
+  return week;
+}
+
+function navController(e) {
+  if (e.target.classList.contains("nav-filter")) {
+    changeSubHeading(e.target.id);
+    filterTodo(e.target.id);
+  } else if (e.target.classList.contains("project-button")) {
+    projectPopupHandler(e);
+  }
+}
+
+function modalCloseCheck(e) {
+  if (!e.target.closest(".modal-content")) {
+    modalDisplayController(e.target.id);
+    if (e.target.id != "edit") {
+      resetModal();
+    }
+  }
+}
+
+function modalEventsHandler(buttonText) {
+  if (buttonText === "Add Task") {
+    createTask();
+  } else {
+    const updateTask = true;
+    createTask(updateTask);
+  }
+}
+
+function mqController(mq, filter) {
+  mq.onchange = (e) => {
+    if (e.matches) {
+      filterTodo(filter);
+    } else {
+      filterTodo(filter);
+    }
+  };
+}
+
+function checkMedia(string) {
+  const mq = window.matchMedia("(max-width: 990px)");
+
+  if (mq.matches && string.length > 25) {
+    // If media query matches
+    return (string = string.substring(0, 20) + "...");
+  } else {
+    return string;
   }
 }
 
@@ -58,16 +118,15 @@ function getTargetTask() {
   };
 }
 
-function deleteTask(listElement, elementName) {
-  if (listElement) listElement.remove();
-  removeTask(elementName);
-}
-
-function checkWeek(project) {
-  const week = isThisWeek(new Date(project.clearFormattedDate()), {
-    weekStartsOn: 1,
-  });
-  return week;
-}
-
-export { filterTodo, handleTaskIcons, deleteTask, checkWeek, selectedTask };
+export {
+  modalEventsHandler,
+  modalCloseCheck,
+  handleTaskIcons,
+  navController,
+  mqController,
+  checkMedia,
+  checkWeek,
+  deleteTask,
+  filterTodo,
+  selectedTask,
+};

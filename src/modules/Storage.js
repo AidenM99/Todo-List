@@ -1,7 +1,7 @@
-import Task from "./Task";
-import TodoList from "./Todo";
-import Project from "./Project";
 import { checkWeek, selectedTask } from "./app";
+import Project from "./Project";
+import TodoList from "./Todo";
+import Task from "./Task";
 
 function saveTodoList(todoList) {
   localStorage.setItem("todoList", JSON.stringify(todoList));
@@ -126,16 +126,16 @@ function updateWeekProjects(projectName) {
 }
 
 export {
-  getTodoList,
-  saveTodoList,
-  addTask,
-  removeTask,
-  addProject,
   updateTodayProjects,
   updateWeekProjects,
+  checkComplete,
+  removeProject,
+  saveTodoList,
+  getTodoList,
+  removeTask,
   findTaskData,
   editTaskData,
   setComplete,
-  checkComplete,
-  removeProject,
+  addProject,
+  addTask,
 };
