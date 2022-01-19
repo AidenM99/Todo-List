@@ -89,9 +89,9 @@ function modalEventsHandler(button) {
   }
 }
 
-function mqController(mq990, mq500, filter) {
+function mqController(mq750, mq500, filter) {
   // Resets todo list when media query is met
-  mq990.onchange = (e) => {
+  mq750.onchange = (e) => {
     if (e.matches) {
       filterTodo(filter);
     } else {
@@ -108,12 +108,12 @@ function mqController(mq990, mq500, filter) {
 }
 
 function checkMedia(string) {
-  const mq990 = window.matchMedia("(max-width: 990px)");
+  const mq750 = window.matchMedia("(max-width: 750px)");
   const mq500 = window.matchMedia("(max-width: 500px)");
   if (mq500.matches && string.length > 15) {
     // If media query matches return shortened task name
     return (string = string.substring(0, 15) + "...");
-  } else if (mq990.matches && string.length > 25) {
+  } else if (mq750.matches && string.length > 25) {
     return (string = string.substring(0, 25) + "...");
   } else {
     return string;
