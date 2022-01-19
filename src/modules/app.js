@@ -104,7 +104,7 @@ function mqController(mq, filter) {
 function checkMedia(string) {
   const mq = window.matchMedia("(max-width: 990px)");
 
-  if (mq.matches && string.length > 25) {
+  if (mq.matches && string.length > 20) {
     // If media query matches return shortened task name
     return (string = string.substring(0, 20) + "...");
   } else {
