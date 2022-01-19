@@ -20,7 +20,7 @@ import {
 } from "./Storage";
 
 function filterTodo(id) {
-   // Removes all todo elements and reconstructs them based on current filters
+  // Removes all todo elements and reconstructs them based on current filters
   const filter = id;
   const today = format(new Date(), "dd/MM/yyyy");
   const todoElement = document.querySelectorAll(".todo-item");
@@ -77,13 +77,16 @@ function modalCloseCheck(e) {
   }
 }
 
-function modalEventsHandler(buttonText) {
-  if (buttonText === "Add Task") {
+function modalEventsHandler(button) {
+  console.log(button);
+  if (button.textContent === "Add Task") {
     createTask();
-  } else {
+  } else if (button.textContent === "Update Task") {
     // If updateTask, user is editing task and a new task will not be appended
     const updateTask = true;
     createTask(updateTask);
+  } else if (button.id === "close-button") {
+    modalDisplayController();
   }
 }
 

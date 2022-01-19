@@ -47,9 +47,11 @@ function initModal() {
     modalDisplayController(e.target.id);
   });
 
-  const modalButton = document.querySelector(".modal-button");
-  modalButton.addEventListener("click", (e) => {
-    modalEventsHandler(e.target.textContent);
+  const modalContent = document.querySelectorAll(".modal-content");
+  modalContent.forEach((modal) => {
+    modal.addEventListener("click", (e) => {
+      modalEventsHandler(e.target);
+    });
   });
 
   document.addEventListener("click", (e) => {
@@ -164,6 +166,7 @@ function createTask(updateTask) {
   displayTask(newTask, filter);
   filterTodo(filter);
   resetModal();
+  modalDisplayController();
 }
 
 function editTask(newTask, filter) {
