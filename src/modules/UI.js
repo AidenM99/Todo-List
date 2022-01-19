@@ -212,16 +212,16 @@ function displayTask(task) {
 function getTaskDetails(id, elementName) {
   const taskDetails = document.querySelector(".task-details");
   taskDetails.innerHTML = `
-  <span class="task-prop">Name:</span><p class="task-name-data">${
+  <span class="task-key">Name:</span><p class="task-prop">${
     findTaskData("Inbox", elementName).name
   }</p> 
-  <span class="task-prop">Details:</span><p class="task-description">${
+  <span class="task-key">Details:</span><p class="task-prop">${
     findTaskData("Inbox", elementName).description
   }</p> 
-  <span class="task-prop">Priority:</span><p class="task-priority">${
+  <span class="task-key">Priority:</span><p class="task-prop">${
     findTaskData("Inbox", elementName).priority
   }</p> 
-  <span class="task-prop">Due Date:</span><p class="task-date">${
+  <span class="task-key">Due Date:</span><p class="task-prop">${
     findTaskData("Inbox", elementName).dueDate
   }</p> 
   `;
@@ -278,10 +278,12 @@ function projectPopupHandler(e) {
 
 function createProject() {
   const projectName = document.querySelector(".project-input").value;
+  const projectInput = document.querySelector(".project-input");
 
   if (projectName.length > 40) {
     return alert("Project name cannot exceed 40 characters");
   } else if (findProjectData(projectName)) {
+    projectInput.value = "";
     return alert("Project names must be different");
   }
 
