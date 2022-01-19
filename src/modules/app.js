@@ -68,6 +68,7 @@ function navController(e) {
 }
 
 function modalCloseCheck(e) {
+  if (e.target.classList.contains("new-todo-text")) return;
   // Closes modal if modal content cannot be found when searching DOM tree
   if (!e.target.closest(".modal-content")) {
     modalDisplayController(e.target.id);

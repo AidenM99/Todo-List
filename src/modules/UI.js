@@ -41,7 +41,7 @@ function initNav() {
 function initModal() {
   const newTodo = document.getElementById("new-todo");
   newTodo.addEventListener("click", (e) => {
-    modalDisplayController(e.target.id);
+    modalDisplayController(e.target.closest("button").id);
   });
 
   const modalContent = document.querySelectorAll(".modal-content");
