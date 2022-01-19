@@ -304,6 +304,7 @@ input[type="date"],
   width: 80px;
   float: left;
   color: var(--color-orange);
+  margin: 0 3px 0 0;
 }
 
 .task-prop {
@@ -360,4 +361,17 @@ input[type="date"],
 
 .show {
   display: block;
+}
+
+.close-button {
+  position: absolute;
+  right: 9px;
+  top: 7px;
+  color: #000000;
+}
+
+.close-button:hover {
+  transform: scale(1.5);
+  transition: 300ms;
+  cursor: pointer;
 }
