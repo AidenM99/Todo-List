@@ -228,6 +228,7 @@ button {
   position: relative;
   background-color: #ffffff;
   color: var(--color-orange);
+  max-width: 384px;
   min-width: 384px;
   display: flex;
   justify-content: space-around;
@@ -246,18 +247,13 @@ button {
   padding: 40px;
 }
 
-.task-description,
-.task-date,
-.task-priority {
-  margin: 2px 0;
-}
-
-.task-name-data {
-  margin: 0;
-}
-
 .modal-heading {
   margin: 0 0 15px 0;
+}
+
+.info-modal-heading {
+  margin: 10px 0 10px 0;
+  border-bottom: 3px solid var(--color-darker-grey);
 }
 
 .modal-form > input[type="text"],
@@ -289,30 +285,38 @@ input[type="date"],
   background-color: var(--color-darker-grey);
 }
 
-#priority {
-  height: 37px;
-  width: 262px;
-}
-
 .task-details {
   color: #000000;
   margin: 0;
   font-weight: normal;
-}
-
-.task-prop {
-  font-weight: bold;
-}
-
-.description {
-  margin-bottom: 10px;
-  border-bottom: 3px solid var(--color-darker-grey);
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 .task-details-button {
   margin: 0 5px 0 12.5px;
   border-radius: 5px;
   background-color: var(--color-orange);
+}
+
+.task-key {
+  font-weight: bold;
+  width: 80px;
+  float: left;
+  color: var(--color-orange);
+}
+
+.task-prop {
+  margin: 0;
+}
+
+.task-prop:nth-child(8) {
+  margin-bottom: 5px;
+}
+
+#priority {
+  height: 37px;
+  width: 262px;
 }
 
 @media (max-width: 990px) {
