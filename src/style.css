@@ -124,6 +124,7 @@ button {
 
 .icon {
   margin-right: 5px;
+  pointer-events: none;
 }
 
 .projects-heading {
@@ -165,6 +166,7 @@ button {
 
 .add-icon {
   margin: 0 5px;
+  pointer-events: none;
 }
 
 .todoSectionHeader {
