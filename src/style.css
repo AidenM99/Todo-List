@@ -293,6 +293,19 @@ input[type="date"],
   background-color: var(--color-darker-grey);
 }
 
+.close-button {
+  position: absolute;
+  right: 9px;
+  top: 7px;
+  color: #000000;
+}
+
+.close-button:hover {
+  transform: scale(1.5);
+  transition: 300ms;
+  cursor: pointer;
+}
+
 .task-details {
   color: #000000;
   margin: 0;
@@ -358,23 +371,12 @@ input[type="date"],
   }
 }
 
+@media (max-width: 750px) {}
+
 .hide {
   display: none;
 }
 
 .show {
   display: block;
-}
-
-.close-button {
-  position: absolute;
-  right: 9px;
-  top: 7px;
-  color: #000000;
-}
-
-.close-button:hover {
-  transform: scale(1.5);
-  transition: 300ms;
-  cursor: pointer;
 }
