@@ -60,9 +60,10 @@ function initModal() {
 }
 
 function initMedia() {
-  const mq = window.matchMedia("(max-width: 990px)");
+  const mq990 = window.matchMedia("(max-width: 990px)");
+  const mq500 = window.matchMedia("(max-width: 500px)");
   const filter = document.querySelector(".sub-heading").textContent;
-  mqController(mq, filter);
+  mqController(mq990, mq500, filter);
 }
 
 function loadTasks() {
