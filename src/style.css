@@ -359,7 +359,7 @@ input[type="date"],
   }
 }
 
-@media (max-width: 510px) {
+@media (max-width: 550px) {
   .modal-content {
     min-width: 300px;
     margin-top: -75px;
@@ -378,6 +378,18 @@ input[type="date"],
 
   .todo-item {
     padding: 2px;
+  }
+
+  .sub-heading {
+    font-size: 1.2em;
+  }
+
+  .new-todo-text {
+    display: none;
+  }
+
+  #new-todo {
+    padding: 0.35em 0.35em
   }
 }
 
