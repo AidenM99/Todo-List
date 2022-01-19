@@ -78,7 +78,6 @@ function modalCloseCheck(e) {
 }
 
 function modalEventsHandler(button) {
-  console.log(button);
   if (button.textContent === "Add Task") {
     createTask();
   } else if (button.textContent === "Update Task") {
