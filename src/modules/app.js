@@ -89,37 +89,6 @@ function modalEventsHandler(button) {
   }
 }
 
-function mqController(mq750, mq500, filter) {
-  // Resets todo list when media query is met
-  mq750.onchange = (e) => {
-    if (e.matches) {
-      filterTodo(filter);
-    } else {
-      filterTodo(filter);
-    }
-  };
-  mq500.onchange = (e) => {
-    if (e.matches) {
-      filterTodo(filter);
-    } else {
-      filterTodo(filter);
-    }
-  };
-}
-
-function checkMedia(string) {
-  const mq750 = window.matchMedia("(max-width: 750px)");
-  const mq500 = window.matchMedia("(max-width: 500px)");
-  if (mq500.matches && string.length > 15) {
-    // If media query matches return shortened task name
-    return (string = string.substring(0, 15) + "...");
-  } else if (mq750.matches && string.length > 25) {
-    return (string = string.substring(0, 25) + "...");
-  } else {
-    return string;
-  }
-}
-
 const selectedTask = new getTargetTask();
 
 function getTargetTask() {
@@ -139,8 +108,6 @@ export {
   modalCloseCheck,
   handleTaskIcons,
   navController,
-  mqController,
-  checkMedia,
   checkWeek,
   deleteTask,
   filterTodo,

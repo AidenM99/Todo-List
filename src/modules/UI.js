@@ -16,15 +16,12 @@ import {
   modalCloseCheck,
   handleTaskIcons,
   navController,
-  mqController,
-  checkMedia,
   filterTodo,
 } from "./app";
 
 function loadPage() {
   initNav();
   initModal();
-  initMedia();
   loadTasks();
   loadProjects();
 }
@@ -57,13 +54,6 @@ function initModal() {
   document.addEventListener("click", (e) => {
     modalCloseCheck(e);
   });
-}
-
-function initMedia() {
-  const mq750 = window.matchMedia("(max-width: 750px)");
-  const mq500 = window.matchMedia("(max-width: 500px)");
-  const filter = document.querySelector(".sub-heading").textContent;
-  mqController(mq750, mq500, filter);
 }
 
 function loadTasks() {
@@ -193,9 +183,7 @@ function displayTask(task) {
 
   const leftPanel = document.createElement("div");
   leftPanel.classList.add("left-panel");
-  leftPanel.innerHTML = `<i class="far fa-circle"></i><p class="task-name">${checkMedia(
-    task.name
-  )}</p>`;
+  leftPanel.innerHTML = `<i class="far fa-circle"></i><p class="task-name">${task.name}</p>`;
 
   const rightPanel = document.createElement("div");
   rightPanel.classList.add("right-panel");
@@ -284,9 +272,7 @@ function createProject() {
   const projectName = document.querySelector(".project-input").value;
   const projectInput = document.querySelector(".project-input");
 
-  if (projectName.length > 40) {
-    return alert("Project name cannot exceed 40 characters");
-  } else if (findProjectData(projectName)) {
+  if (findProjectData(projectName)) {
     projectInput.value = "";
     return alert("Project names must be different");
   }
@@ -355,6 +341,5 @@ export {
   resetModal,
   createTask,
   deleteTask,
-  initMedia,
   loadPage,
 };

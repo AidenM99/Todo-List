@@ -359,7 +359,7 @@ input[type="date"],
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 510px) {
   .modal-content {
     min-width: 300px;
     margin-top: -75px;
@@ -369,9 +369,17 @@ input[type="date"],
     min-width: 300px;
     padding: 40px 20px;
   }
-}
 
-@media (max-width: 750px) {}
+  .task-name,
+  .todo-icon,
+  .fa-circle {
+    font-size: 12px;
+  }
+
+  .todo-item {
+    padding: 2px;
+  }
+}
 
 .hide {
   display: none;
