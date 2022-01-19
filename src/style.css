@@ -391,7 +391,7 @@ input[type="date"],
   }
 
   #new-todo {
-    padding: 0.35em 0.35em
+    padding: 0.35em 0.35em;
   }
 }
 

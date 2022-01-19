@@ -275,6 +275,8 @@ function createProject() {
   if (findProjectData(projectName)) {
     projectInput.value = "";
     return alert("Project names must be different");
+  } else if (!projectInput.value) {
+    return alert("Project names cannot be empty");
   }
 
   const newProject = new Project(projectName);
