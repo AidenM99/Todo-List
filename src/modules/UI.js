@@ -283,7 +283,6 @@ function createProject() {
 
   addProject(newProject);
   displayProject(newProject);
-  filterTodo(projectName);
 }
 
 function displayProject(project) {
