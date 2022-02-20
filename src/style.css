@@ -1,14 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 
 :root {
-  --color-orange: #ff4500;
-  --color-grey: #e8e8e8;
+  --color-orange: #db4c3f;
+  --color-grey: #f7f7f7;
   --color-darker-grey: #dcdcdc;
   --twitter-blue: #1da1f2;
 }
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: "Roboto", sans-serif;
   margin: 0;
   padding: 0;
   height: 100%;
@@ -21,7 +21,7 @@ button {
   border-radius: 0.12em;
   box-sizing: border-box;
   text-decoration: none;
-  font-family: "Poppins", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: bold;
   color: #ffffff;
   text-align: center;
@@ -169,7 +169,7 @@ button {
   pointer-events: none;
 }
 
-.todoSectionHeader {
+.todo-section-header {
   display: flex;
   justify-content: space-between;
   border-bottom: solid 2px var(--color-orange);
@@ -177,6 +177,7 @@ button {
 
 .todo-list {
   padding: 5px 0;
+  overflow-x: auto;
 }
 
 .todo-item {
@@ -204,12 +205,9 @@ button {
   margin: 0 7.5px;
 }
 
-#edit:hover {
-  color: green;
-}
-
-#delete:hover {
-  color: red;
+.todo-icon:hover {
+  transition: 100ms;
+  transform: scale(1.2);
 }
 
 /***** Modal *****/
@@ -230,14 +228,13 @@ button {
   position: relative;
   background-color: #ffffff;
   color: var(--color-orange);
-  max-width: 384px;
-  min-width: 384px;
+  width: 50%;
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex-direction: column;
   border-radius: 10px;
-  border: solid var(--color-orange) 2px;
+  border: solid #000000 1px;
   padding: 50px 10px;
   font-weight: bold;
   text-align: left;
@@ -273,7 +270,7 @@ input[type="date"],
   border: solid 1px #b8b8b8;
   display: block;
   margin: 0 0 10px 0;
-  font-family: "Poppins", sans-serif;
+  font-family: "Roboto", sans-serif;
   box-sizing: border-box;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -291,7 +288,8 @@ input[type="date"],
   cursor: pointer;
 }
 
-.modal-button:hover {
+.modal-button:hover,
+#new-todo:hover {
   background-color: var(--color-darker-grey);
 }
 
@@ -314,12 +312,6 @@ input[type="date"],
   font-weight: normal;
   overflow-x: auto;
   white-space: nowrap;
-}
-
-.task-details-button {
-  margin: 0 5px 0 12.5px;
-  border-radius: 5px;
-  background-color: var(--color-orange);
 }
 
 .task-key {
@@ -363,27 +355,21 @@ input[type="date"],
 
 @media (max-width: 550px) {
   .modal-content {
-    min-width: 300px;
-    margin-top: -75px;
+    width: 80%;
   }
 
   .modal-content.details {
-    min-width: 300px;
     padding: 40px 20px;
   }
 
   .task-name,
   .todo-icon,
   .fa-circle {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .todo-item {
     padding: 2px;
-  }
-
-  .sub-heading {
-    font-size: 1.2em;
   }
 
   .new-todo-text {
@@ -401,4 +387,21 @@ input[type="date"],
 
 .show {
   display: block;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 20px;
+  height: 15px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--color-orange);
+  border-radius: 10px;
 }
