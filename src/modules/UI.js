@@ -188,9 +188,9 @@ function displayTask(task) {
   const rightPanel = document.createElement("div");
   rightPanel.classList.add("right-panel");
   rightPanel.innerHTML = `
-  <button id="info" class="task-details-button">Details</button>
+  <i class="fa-solid fa-circle-question todo-icon" id="info"></i>
   <i class="fas fa-edit todo-icon" id="edit"></i>
-  <i class="fas fa-trash todo-icon" id="delete"></i>
+  <i class="fa-solid fa-trash-can todo-icon" id="delete"></i>
   `;
 
   listElement.appendChild(leftPanel);
@@ -268,18 +268,27 @@ function projectPopupHandler(e) {
   if (e.target.classList.contains("cancel")) projectInput.value = "";
 }
 
-function createProject() {
-  const projectName = document.querySelector(".project-input").value;
-  const projectInput = document.querySelector(".project-input");
+function formatName(projectName) {
+  return projectName
+    .split(" ")
+    .map((word) => {
+      return word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .join(" ");
+}
 
-  if (findProjectData(projectName)) {
+function createProject() {
+  const projectInput = document.querySelector(".project-input");
+  const project = formatName(projectInput.value);
+
+  if (findProjectData(project)) {
     projectInput.value = "";
     return alert("Project names must be different");
   } else if (!projectInput.value) {
     return alert("Project names cannot be empty");
   }
 
-  const newProject = new Project(projectName);
+  const newProject = new Project(project);
 
   addProject(newProject);
   displayProject(newProject);
@@ -291,12 +300,12 @@ function displayProject(project) {
 
   const projectButton = document.createElement("button");
   projectButton.classList.add("new-project-button");
-  projectButton.id = project.name;
+  projectButton.id = `${formatName(project.name)}`;
   projectInput.value = "";
 
   const leftProjectPanel = document.createElement("div");
   leftProjectPanel.classList.add("left-panel");
-  leftProjectPanel.innerHTML = `<span>${project.name}</span>`;
+  leftProjectPanel.innerHTML = `<span>${formatName(project.name)}</span>`;
 
   const rightProjectPanel = document.createElement("div");
   rightProjectPanel.classList.add("right-panel");
