@@ -1,4 +1,4 @@
-import { checkWeek, selectedTask } from "./app";
+import { checkWeek, selectedTask } from "./UI";
 import Project from "./Project";
 import TodoList from "./Todo";
 import Task from "./Task";
@@ -84,8 +84,8 @@ function findProjectData(projectName) {
 function editTaskData(task) {
   const todoList = getTodoList();
   todoList.getProjects().forEach((project) => {
-    if (project.findTask(selectedTask.get())) {
-      project.findTask(selectedTask.get()).setData(task);
+    if (project.findTask(selectedTask)) {
+      project.findTask(selectedTask).setData(task);
     }
   });
   saveTodoList(todoList);
