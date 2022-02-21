@@ -280,10 +280,13 @@ function createTask(updateTask) {
   const newTask = new Task(name, desc, date, priority, isComplete);
   newTask.dueDate = newTask.formatDate();
 
-  if (updateTask) {
-    editTask(newTask, filter);
-  } else if (findTaskData("Inbox", newTask.name)) {
+  if (
+    findTaskData("Inbox", newTask.name) &&
+    findTaskData("Inbox", newTask.name).name !== selectedTask
+  ) {
     alert("Task names must be different");
+  } else if (updateTask) {
+    editTask(newTask, filter);
   } else {
     taskCreationHandler(filter, newTask);
   }
