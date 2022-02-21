@@ -1,4 +1,4 @@
-import { isThisWeek, format } from "date-fns";
+import { format } from "date-fns";
 import Project from "./Project";
 import Task from "./Task";
 import {
@@ -340,22 +340,17 @@ function loadTasks() {
 
 function displayProject(project) {
   const projects = document.querySelector(".projects");
+
   const projectInput = document.querySelector(".project-input");
+  projectInput.value = "";
 
   const projectButton = document.createElement("button");
   projectButton.classList.add("new-project-button");
-  projectButton.id = `${formatName(project.name)}`;
+  projectButton.id = project.name;
   projectButton.addEventListener("click", (e) => {
     changeSubHeading(e.target.closest("button").id);
     filterTodo(e.target.closest("button").id);
   });
-  projectInput.value = "";
-
-  const leftPanel = document.createElement("div");
-  leftPanel.classList.add("left-panel");
-
-  const projectName = document.createElement("span");
-  projectName.textContent = formatName(project.name);
 
   const rightPanel = document.createElement("div");
   rightPanel.classList.add("right-panel");
@@ -365,6 +360,12 @@ function displayProject(project) {
     }
     e.stopPropagation();
   });
+
+  const leftPanel = document.createElement("div");
+  leftPanel.classList.add("left-panel");
+
+  const projectName = document.createElement("span");
+  projectName.textContent = project.name;
 
   const deleteButton = document.createElement("i");
   deleteButton.classList.add("fas", "fa-times", "delete-project", "hide");
@@ -403,27 +404,19 @@ function loadPage() {
   loadProjects();
 }
 
-function formatName(projectName) {
-  return projectName
-    .split(" ")
-    .map((word) => {
-      return word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase();
-    })
-    .join(" ");
-}
-
 function createProject() {
   const projectInput = document.querySelector(".project-input");
-  const project = formatName(projectInput.value);
 
-  if (findProjectData(project)) {
+  if (findProjectData(projectInput.value)) {
     projectInput.value = "";
     return alert("Project names must be different");
   } else if (!projectInput.value) {
     return alert("Project names cannot be empty");
   }
 
-  const newProject = new Project(project);
+  const newProject = new Project(projectInput.value);
+
+  newProject.name = newProject.formatName();
 
   addProject(newProject);
   displayProject(newProject);
@@ -438,12 +431,4 @@ function deleteProject(e) {
   inbox.click();
 }
 
-function checkWeek(task) {
-  // Filter task by current week, clears date formatting so it can be parsed
-  const week = isThisWeek(new Date(task.clearFormattedDate()), {
-    weekStartsOn: 1,
-  });
-  return week;
-}
-
-export { loadPage, checkWeek, selectedTask };
+export { loadPage, selectedTask };

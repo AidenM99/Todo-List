@@ -1,3 +1,5 @@
+import { isThisWeek } from "date-fns";
+
 export default class Task {
   constructor(name, description, dueDate, priority, isComplete) {
     this.name = name;
@@ -32,5 +34,12 @@ export default class Task {
     this.description = task.description;
     this.dueDate = task.dueDate;
     this.priority = task.priority;
+  }
+
+  checkWeek() {
+    // Filter task by current week, clears date formatting so it can be parsed
+    return isThisWeek(new Date(this.clearFormattedDate()), {
+      weekStartsOn: 1,
+    });
   }
 }

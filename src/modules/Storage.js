@@ -1,4 +1,4 @@
-import { checkWeek, selectedTask } from "./UI";
+import { selectedTask } from "./UI";
 import Project from "./Project";
 import TodoList from "./Todo";
 import Task from "./Task";
@@ -124,7 +124,7 @@ function updateWeekProjects(projectName) {
     todoList
       .getProject(projectName)
       .getTasks()
-      .filter((task) => checkWeek(task))
+      .filter((task) => task.checkWeek())
   );
   saveTodoList(todoList);
   return todoList;

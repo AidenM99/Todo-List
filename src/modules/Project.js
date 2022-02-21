@@ -23,4 +23,13 @@ export default class Project {
   findTaskIndex(name) {
     return this.projects.findIndex((task) => task.name === name);
   }
+
+  formatName() {
+    return this.name
+      .split(" ")
+      .map((word) => {
+        return word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase();
+      })
+      .join(" ");
+  }
 }
