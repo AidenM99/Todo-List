@@ -29,6 +29,7 @@ This project was built using:
 - Edit tasks
 ![](./images/edit.png)
 
-- Mobile view
+Mobile view
+
 ![](./images/mobile.png)
 
