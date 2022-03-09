@@ -17,19 +17,22 @@ This project was built using:
 - Fully responsive
 
 ### Screenshots
-- An overview of the Application
+An overview of the Application
+
 ![](./images/inbox.png)
 
-- Create projects and place tasks in them
+Create projects and place tasks in them
+
 ![](./images/project.png)
 
-- View more info about a task
+View more info about a task
+
 ![](./images/desc.png)
 
-- Edit tasks
+Edit tasks
+
 ![](./images/edit.png)
 
 Mobile view
 
 ![](./images/mobile.png)
-
